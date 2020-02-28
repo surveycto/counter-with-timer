@@ -1,5 +1,6 @@
 <!--link rel="stylesheet" type="text/css" href="style.css">
 <script src="script.js" defer></script-->
+
 <div class="label default-question-text-size" id="label">{{{LABEL}}}</div>
 <div class="hint default-hint-text-size" id="hint">{{{HINT}}}</div>
 <div id="timer" class="label default-question-text-size"></div>
@@ -8,4 +9,9 @@
     <span id="buttonsst"><button onclick="startStopTimer()" class="startstop" id="startstop">Start</button></span><br>
     <button onclick="countup()" class="counterup" id="counterup">Counter</button><br>
     <button onclick="countdown()" class="counterdown" id="counterdown" style="font-size: 10pt;">Counter down</button>
+    <div id="restartbuttons">
+        <button onclick="restartconf('timer')" class="counterdown" id="counterdown" style="font-size: 10pt;">Restart timer</button>
+        <button onclick="restartconf('counter')" class="counterdown" id="counterdown" style="font-size: 10pt;">Restart counter</button>
+        <div id="restartconfirm"></div>
+    </div>
 </div>
