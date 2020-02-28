@@ -9,7 +9,7 @@
             'value': 'ds'
         }
     ],
-    'CURRENT_ANSWER': null
+    'CURRENT_ANSWER': '323 32002'
 }// Above for testing only */
 
 var timerDisp = document.querySelector('#timer');
@@ -63,12 +63,14 @@ var timerRunning = false;
 var startTime = 0; //This will get an actual value when the timer starts in startStopTimer();
 
 if (fieldProperties.CURRENT_ANSWER != null) {
-    timeLeft = 0;
+    let parts = fieldProperties.CURRENT_ANSWER.match(/[^ ]+/g);
+    console.log(parts)
+    counter = parseInt(parts[0]);
+    timeLeft = parseInt(parts[1]);
+    timePassed = timeStart - timeLeft;
     timerRunning = false;
-    counter = fieldProperties.CURRENT_ANSWER;
-    ssButton.classList.add('buttonstop');
-    ssButton.innerHTML = "Stop!";
 }
+countDisp.innerHTML = counter
 
 setInterval(timer, 1);
 
