@@ -16,7 +16,7 @@ var timerDisp = document.querySelector('#timer');
 var ssButton = document.querySelector('#startstop');
 var countDisp = document.querySelector('#count');
 var restartButtons = document.querySelector('#restartbuttons');
-var restartConfirm = document.querySelector('#restartconfirm');
+var confirmation = document.querySelector('#confirmation');
 
 var parameters = fieldProperties.PARAMETERS
 var numParam = parameters.length
@@ -85,7 +85,7 @@ function timer() {
         ssButton.classList.add('buttonstop');
         ssButton.innerHTML = "Stop!";
         restartButtons.style.display = '';
-        setAnswer(counter); //Final answer is the value of the counter
+        setAns();
     }
     timerDisp.innerHTML = String(Math.ceil(timeLeft / round)) + unit;
 }
@@ -98,7 +98,7 @@ function startStopTimer() {
     }
     else {
         restartButtons.style.display = 'none';
-        restartConfirm.innerHTML = '';
+        confirmation.innerHTML = '';
         startTime = Date.now() - timePassed;
         timerRunning = true;
         ssButton.innerHTML = "Stop";
@@ -108,6 +108,9 @@ function startStopTimer() {
 function countup() {
     counter++;
     countDisp.innerHTML = counter;
+    if (timeLeft == 0) {
+        setAns();
+    }
 }
 
 function countdown() {
@@ -116,6 +119,10 @@ function countdown() {
         counter = 0;
     }
     countDisp.innerHTML = counter;
+
+    if (timeLeft == 0) {
+        setAns();
+    }
 }
 
 function restartconf(restarter) {
@@ -124,29 +131,48 @@ function restartconf(restarter) {
 
 
     warningMessage += '<br><button id="yes" class="whitebutton">Yes</button><button id="no" class="bluebutton">No</button>'
-    
-    restartConfirm.innerHTML = warningMessage;
+
+    confirmation.innerHTML = warningMessage;
 
     document.querySelector('#yes').addEventListener('click', function () {
-        if(restarter == 'timer'){
+        if (restarter == 'timer') {
             timerDisp.innerHTML = timeLeft = timeStart;
             timePassed = 0;
             ssButton.classList.remove('buttonstop');
             ssButton.innerHTML = "Start";
             ssButton.disabled = false;
         }
-        else if(restarter == 'counter'){
+        else if (restarter == 'counter') {
             countDisp.innerHTML = counter = 0;
         }
-        restartConfirm.innerHTML = null;
+        confirmation.innerHTML = null;
     });
 
     document.querySelector('#no').addEventListener('click', function () {
-        restartConfirm.innerHTML = null;
+        confirmation.innerHTML = null;
+    });
+}
+
+function endEarly() {
+    let warningMessage = 'Are sure you would like to end early? The current time and counter value will be saved.' +
+        '<br><button id="yes" class="whitebutton">Yes</button><button id="no" class="bluebutton">No</button>'
+
+    confirmation.innerHTML = warningMessage;
+    document.querySelector('#yes').addEventListener('click', function () {
+        setAns();
+        goToNextField();
+    });
+
+    document.querySelector('#no').addEventListener('click', function () {
+        confirmation.innerHTML = null;
     });
 }
 
 
+
+function setAns() {
+    setAnswer(String(counter) + ' ' + String(timeLeft)); //Final answer is the value of the counter and the time left
+}
 
 function clearAnswer() {
     if (timerRunning) {
