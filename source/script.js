@@ -9,7 +9,7 @@
             'value': 'ds'
         }
     ],
-    'CURRENT_ANSWER': '323 32002'
+    'CURRENT_ANSWER': '10 1000'
 }// Above for testing only */
 
 var timerDisp = document.querySelector('#timer');
@@ -65,7 +65,6 @@ var startTime = 0; //This will get an actual value when the timer starts in star
 
 if (fieldProperties.CURRENT_ANSWER != null) {
     let parts = fieldProperties.CURRENT_ANSWER.match(/[^ ]+/g);
-    console.log(parts)
     counter = parseInt(parts[0]);
     timeLeft = parseInt(parts[1]);
     timePassed = timeStart - timeLeft;
@@ -143,7 +142,8 @@ function restartconf(restarter) {
             ssButton.classList.remove('buttonstop');
             ssButton.innerHTML = "Start";
             ssButton.disabled = false;
-            endEarlyButton.style.display = 'none';
+            endEarlyButton.style.display = '';
+            setAnswer()
         }
         else if (restarter == 'counter') {
             countDisp.innerHTML = counter = 0;
