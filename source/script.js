@@ -17,6 +17,7 @@ var ssButton = document.querySelector('#startstop');
 var countDisp = document.querySelector('#count');
 var restartButtons = document.querySelector('#restartbuttons');
 var confirmation = document.querySelector('#confirmation');
+var endEarlyButton = document.querySelector('#endearly');
 
 var parameters = fieldProperties.PARAMETERS
 var numParam = parameters.length
@@ -87,6 +88,7 @@ function timer() {
         ssButton.classList.add('buttonstop');
         ssButton.innerHTML = "Stop!";
         restartButtons.style.display = '';
+        endEarlyButton.style.display = 'none';
         setAns();
     }
     timerDisp.innerHTML = String(Math.ceil(timeLeft / round)) + unit;
@@ -130,8 +132,6 @@ function countdown() {
 function restartconf(restarter) {
     let warningMessage = "Are sure you would like to restart the " + restarter + "?";
 
-
-
     warningMessage += '<br><button id="yes" class="whitebutton">Yes</button><button id="no" class="bluebutton">No</button>'
 
     confirmation.innerHTML = warningMessage;
@@ -143,6 +143,7 @@ function restartconf(restarter) {
             ssButton.classList.remove('buttonstop');
             ssButton.innerHTML = "Start";
             ssButton.disabled = false;
+            endEarlyButton.style.display = 'none';
         }
         else if (restarter == 'counter') {
             countDisp.innerHTML = counter = 0;

@@ -1,5 +1,5 @@
-<!--link rel="stylesheet" type="text/css" href="style.css">
-<script src="script.js" defer></script-->
+<link rel="stylesheet" type="text/css" href="style.css">
+<script src="script.js" defer></script>
 
 <div class="label default-question-text-size" id="label">{{{LABEL}}}</div>
 <div class="hint default-hint-text-size" id="hint">{{{HINT}}}</div>
@@ -11,10 +11,10 @@
     <button onclick="countdown()" class="counterdown" id="counterdown" style="font-size: 10pt;">Counter down</button>
 </div>
 <div id="restartbuttons" class="buttons label default-question-text-size">
-    <button onclick="restartconf('timer')" class="counterdown" id="counterdown" style="font-size: 10pt;">Restart
+    <button onclick="restartconf('timer')" id="restarttimer" style="font-size: 10pt;">Restart
         timer</button>
-    <button onclick="restartconf('counter')" class="counterdown" id="counterdown" style="font-size: 10pt;">Restart
+    <button onclick="restartconf('counter')"id="restartcounter" style="font-size: 10pt;">Restart
         counter</button><br>
-        <button onclick="endEarly()" class="counterdown" id="counterdown" style="font-size: 10pt;">End early</button>
+        <button onclick="endEarly()" id="endearly" style="font-size: 10pt;">End early</button>
     <div id="confirmation" style="margin-top: 10px;"></div>
 </div>
