@@ -2,7 +2,7 @@
     'PARAMETERS': [
         {
             'key': 'A',
-            'value': 2000
+            'value': 1000
         },
         {
             'key': 'B',
@@ -10,10 +10,9 @@
         }
     ],
     'CURRENT_ANSWER': null
-}*/
+}// Above for testing only */
 
 var timerDisp = document.querySelector('#timer');
-var changer = document.querySelector('#buttonsst');
 var ssButton = document.querySelector('#startstop');
 var countDisp = document.querySelector('#count');
 var restartButtons = document.querySelector('#restartbuttons');
@@ -67,8 +66,8 @@ if (fieldProperties.CURRENT_ANSWER != null) {
     timeLeft = 0;
     timerRunning = false;
     counter = fieldProperties.CURRENT_ANSWER;
-    changer.classList.add('buttonstop');
-    changer.innerHTML = "Stop!";
+    ssButton.classList.add('buttonstop');
+    ssButton.innerHTML = "Stop!";
 }
 
 setInterval(timer, 1);
@@ -79,11 +78,12 @@ function timer() {
         timeLeft = timeStart - timePassed;
     }
 
-    if (timeLeft <= 0) {
+    if (timeLeft <= 0) { //Timer ended
         timeLeft = 0;
         timerRunning = false;
-        changer.classList.add('buttonstop');
-        changer.innerHTML = "Stop!";
+        ssButton.disabled = true;
+        ssButton.classList.add('buttonstop');
+        ssButton.innerHTML = "Stop!";
         restartButtons.style.display = '';
         setAnswer(counter); //Final answer is the value of the counter
     }
@@ -131,6 +131,9 @@ function restartconf(restarter) {
         if(restarter == 'timer'){
             timerDisp.innerHTML = timeLeft = timeStart;
             timePassed = 0;
+            ssButton.classList.remove('buttonstop');
+            ssButton.innerHTML = "Start";
+            ssButton.disabled = false;
         }
         else if(restarter == 'counter'){
             countDisp.innerHTML = counter = 0;

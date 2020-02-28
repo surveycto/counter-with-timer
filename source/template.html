@@ -6,12 +6,14 @@
 <div id="timer" class="label default-question-text-size"></div>
 <div id="countdiv">Count:&nbsp;<span id="count">0</span></div>
 <div class="buttons label default-question-text-size">
-    <span id="buttonsst"><button onclick="startStopTimer()" class="startstop" id="startstop">Start</button></span><br>
+    <button onclick="startStopTimer()" class="startstop" id="startstop">Start</button><br>
     <button onclick="countup()" class="counterup" id="counterup">Counter</button><br>
     <button onclick="countdown()" class="counterdown" id="counterdown" style="font-size: 10pt;">Counter down</button>
-    <div id="restartbuttons">
-        <button onclick="restartconf('timer')" class="counterdown" id="counterdown" style="font-size: 10pt;">Restart timer</button>
-        <button onclick="restartconf('counter')" class="counterdown" id="counterdown" style="font-size: 10pt;">Restart counter</button>
-        <div id="restartconfirm"></div>
-    </div>
+</div>
+<div id="restartbuttons" class="buttons label default-question-text-size">
+    <button onclick="restartconf('timer')" class="counterdown" id="counterdown" style="font-size: 10pt;">Restart
+        timer</button>
+    <button onclick="restartconf('counter')" class="counterdown" id="counterdown" style="font-size: 10pt;">Restart
+        counter</button>
+    <div id="restartconfirm" style="margin-top: 10px;"></div>
 </div>
