@@ -13,8 +13,8 @@ div{
 }
 
 .buttons, #timer, #countdiv{
-
     text-align: center;
+    margin-bottom: 10px;
 }
 
 
@@ -48,9 +48,9 @@ button:active{
 
 .startstop{
     background-color: #6db4de;
-    height: 150px;
-    width: 150px;
-    border-radius: 75px;
+    height: 120px;
+    width: 120px;
+    border-radius: 60px;
 }
 
 .buttonstop{
@@ -84,4 +84,10 @@ button.bluebutton{
     background-color: #047cc2;
     border-color: #367fa9;
     color: #ffffff;
+}
+
+button.small{
+    width: 70px;
+    height: 40px;
+    font-size: 10px;
 }
