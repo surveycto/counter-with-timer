@@ -34,7 +34,7 @@ You can use the `selected-at()` function in order to get each individual value. 
 | Default values | Yes |
 | Custom constraint message | No |
 | Custom required message | No |
-| Read only | Yes |
+| Read only | No |
 | media:image | Yes |
 | media:audio | Yes |
 | media:video | Yes |
