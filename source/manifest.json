@@ -1,5 +1,5 @@
 {
-	"name" : "Timer with counter",
+	"name" : "Counter with timer",
 	"author" : "Dobility",
 	"version": "1.0.3",
 	"supportedFieldTypes": ["text"],
