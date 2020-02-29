@@ -9,7 +9,7 @@
 
 ## Description
 
-Use this plug-in to add a timer to your field. It also includes a counter you can use to keep track of something while timing, with buttons to both count up and count down. The count will never go below 0.
+Use this plug-in to add a timer to your field. It also includes a counter you can use to keep track of something while timing, with buttons to both count up and count down. You can use it to count words read, number of mistakes, or whatever else you need to count. The count will never go below 0.
 
 If an enumerator uses one of the restart buttons or the "End early" button, they will have to confirm the restart/ending.
 

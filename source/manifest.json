@@ -1,7 +1,6 @@
 {
 	"name" : "Counter with timer",
 	"author" : "Dobility",
-	"version": "1.0.3",
-	"supportedFieldTypes": ["text"],
-	"decription": "This is just like the timer, but there is an additional button to keep track of something, such as number of mistakes made, or number of words read correctly. There is also a button to lower the counter in case the enumerator makes a mistake."
+	"version": "1.0.0",
+	"supportedFieldTypes": ["text"]
 }
