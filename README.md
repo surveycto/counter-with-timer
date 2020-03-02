@@ -15,12 +15,12 @@ If an enumerator uses one of the restart buttons or the "End early" button, they
 
 An answer is not set until the timer runs out, or "End early" is confirmed, so the enumerator cannot move on from that field until then. If they "End early", they can come back and continue where they left off with the same amount of time left and the same count value.
 
-You can customize the timer time and unit used. See **Parameters** below for more details.
+You can customize the timer duration and unit used. See **Parameters** below for more details.
 
 The value this plug-in returns is a space-separated list:
 
 0. The count on the counter
-1. The time that was left
+1. The time that was left on the timer
 
 You can use the `selected-at()` function in order to get each individual value. For example, if the field is called "timer1", you can use this expression to get the counter value:
 
@@ -62,10 +62,10 @@ To create your own field plug-in using this as a template, follow these steps:
 
 This field takes two parameters:
 
-1. Time in milliseconds
+1. Duration in milliseconds
 2. Display unit
 
-For the timer, no matter the unit you are using, the timer must be given in milliseconds. For example, if you would like the time to be 20 seconds, the value of this parameter will be `20000`.
+For the timer, no matter the unit you are using, the timer must be given in milliseconds. For example, if you would like the duration to be 20 seconds, the value of this parameter will be `20000`.
 
 You can use the following display units:  
 |**Abbr.**|**Full name**|**Unit in 1 second**|
@@ -77,9 +77,9 @@ You can use the following display units:
 
 For example, if you use the following *appearance*:
 
-    custom-countertimer(time=15000, unit='cs')
+    custom-countertimer(duration=15000, unit='cs')
 
-Even though the time entered is 15,000 milliseconds, it will be displayed as "1500 cs" before the timer starts.
+Even though the duration entered is 15,000 milliseconds, it will be displayed as "1500 cs" before the timer starts.
 
 
 ## More resources
