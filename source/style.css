@@ -50,6 +50,10 @@ button:active{
     background-color: #be5959;
 }
 
+.endearly{
+    background-color: #868686;
+}
+
 .startstop{
     background-color: #6db4de;
     height: 120px;
