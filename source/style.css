@@ -43,7 +43,11 @@ button:active{
 }
 
 .counterup{
-    background-color: #047cc2;
+    background-color: #44d144;
+}
+
+.counterdown{
+    background-color: #be5959;
 }
 
 .startstop{
