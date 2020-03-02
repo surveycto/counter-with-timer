@@ -45,7 +45,7 @@ You can use the `selected-at()` function in order to get each individual value. 
 
 ## How to use
 
-**To use this plug-in as-is**, just download the [countertimer.fieldplugin.zip](countertimer.fieldplugin.zip) file from this repo, and attach it to your form.
+**To use this plug-in as-is**, just download the [counterwithtimer.fieldplugin.zip](countertimer.fieldplugin.zip) file from this repo, and attach it to your form.
 
 To create your own field plug-in using this as a template, follow these steps:
 
