@@ -62,10 +62,10 @@ To create your own field plug-in using this as a template, follow these steps:
 
 This field takes two parameters:
 
-1. Duration in milliseconds
+1. Duration in seconds
 2. Display unit
 
-For the timer, no matter the unit you are using, the timer must be given in milliseconds. For example, if you would like the duration to be 20 seconds, the value of this parameter will be `20000`.
+For the timer, no matter the unit you are using, the duration must be given in seconds. For example, if you would like the duration to be 20 seconds, the value of this parameter will be `20`. If you would like the duration to be 5,500 milliseconds, the parameter should be `5.5`.
 
 You can use the following display units:  
 |**Abbr.**|**Full name**|**Unit in 1 second**|
@@ -77,9 +77,9 @@ You can use the following display units:
 
 For example, if you use the following *appearance*:
 
-    custom-countertimer(duration=15000, unit='cs')
+    custom-countertimer(duration=15, unit='cs')
 
-Even though the duration entered is 15,000 milliseconds, it will be displayed as "1500 cs" before the timer starts.
+Even though the duration entered is 15 seconds, it will be displayed as "1500 cs" before the timer starts.
 
 
 ## More resources

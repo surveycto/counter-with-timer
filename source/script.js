@@ -22,41 +22,38 @@ var endEarlyButton = document.querySelector('#endearly');
 var parameters = fieldProperties.PARAMETERS
 var numParam = parameters.length
 
-var timeStart;
-var unit;
-var round;
-if (numParam == 0) {
-    timeStart = 5000
-    unit = ' ms';
-}
-else {
-    timeStart = parameters[0].value; //Time limit on each field in milliseconds
-    if (numParam >= 2) {
-        unit = ' ' + fieldProperties.PARAMETERS[1].value;
 
-        if (unit == ' cs') {
-            round = 10;
-        }
-        else if (unit == ' ds') {
-            round = 100;
-        }
-        else if (unit == ' s') {
-            round = 1000;
-        }
-        else {
-            unit = ' ms';
+var timeStart = 10000; //Default values may be overwritten depending on the number of paramaters given,
+var unit = 's'; //Default, may be changed
+var round = 1000; //Default, may be changed
+var timeLeft; //Starts this way for the display.
+var timePassed = 0; //Time passed so far
+switch (numParam) {
+    case 2:
+        unit = fieldProperties.PARAMETERS[1].value;
+
+        if (unit == 'ms') {
+            unit = ' milliseconds'
             round = 1;
         }
-    }
-    else {
-        unit = ' ms';
-        round = 1;
-    }
+        else if (unit == 'cs') {
+            unit = ' centiseconds'
+            round = 10;
+        }
+        else if (unit == 'ds') {
+            unit = ' deciseconds'
+            round = 100;
+        }
+        else {
+            unit = ' seconds';
+            round = 1000;
+        }
+    case 1:
+        timeStart = parameters[0].value * 1000; //Time limit on each field in seconds\
 }
+timeLeft = timeStart;
 
 var complete = false;
-var timeLeft = timeStart; //Starts this way for the display.
-var timePassed = 0; //Time passed so far
 var counter = 0;
 
 var timerRunning = false;
