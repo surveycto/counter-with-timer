@@ -67,6 +67,8 @@ This field takes two parameters:
 
 For the timer, no matter the unit you are using, the duration must be given in seconds. For example, if you would like the duration to be 20 seconds, the value of this parameter will be `20`. If you would like the duration to be 5,500 milliseconds, the parameter should be `5.5`.
 
+If no unit is specified, it will display the time in seconds. If no parameters are specified, it will default to 10 seconds.
+
 You can use the following display units:  
 |**Abbr.**|**Full name**|**Unit in 1 second**|
 |:---|:---|:---|
