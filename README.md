@@ -3,7 +3,7 @@
 *This plug-in is currently being tested, but has so far worked well.*
 
 ![](extras/preview-images/paused.png)
-|<img src="extras/preview-images/running.png" width="100px">|<img src="extras/preview-images/end-early-warning.png" width="100px">|<img src="extras/preview-images/timer-end.png" width="100px">|
+|<img src="extras/preview-images/running.png" width="100px">|<img src="extras/preview-images/confirm-restart.png" width="100px">|<img src="extras/preview-images/timer-end.png" width="100px">|
 |:---:|:---:|:---:|
 |Running|Warning|Ended|
 
