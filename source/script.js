@@ -13,6 +13,7 @@
 }// Above for testing only */
 
 var timerDisp = document.querySelector('#timer');
+var unitDisp = document.querySelector('#unit');
 var ssButton = document.querySelector('#startstop');
 var countDisp = document.querySelector('#count');
 var restartButtons = document.querySelector('#restartbuttons');
@@ -33,24 +34,26 @@ switch (numParam) {
         unit = fieldProperties.PARAMETERS[1].value;
 
         if (unit == 'ms') {
-            unit = ' milliseconds'
+            //unit = ' milliseconds'
             round = 1;
         }
         else if (unit == 'cs') {
-            unit = ' centiseconds'
+            //unit = ' centiseconds'
             round = 10;
         }
         else if (unit == 'ds') {
-            unit = ' deciseconds'
+            //unit = ' deciseconds'
             round = 100;
         }
         else {
-            unit = ' seconds';
+            //unit = ' seconds';
+            unit = 's';
             round = 1000;
         }
     case 1:
         timeStart = parameters[0].value * 1000; //Time limit on each field in seconds\
 }
+unitDisp.innerHTML = unit;
 timeLeft = timeStart;
 
 var complete = false;
@@ -87,7 +90,7 @@ function timer() {
         endEarlyButton.style.display = 'none';
         setAns();
     }
-    timerDisp.innerHTML = String(Math.ceil(timeLeft / round)) + unit;
+    timerDisp.innerHTML = Math.ceil(timeLeft / round);
 }
 
 function startStopTimer() {
@@ -101,7 +104,7 @@ function startStopTimer() {
         confirmation.innerHTML = '';
         startTime = Date.now() - timePassed;
         timerRunning = true;
-        ssButton.innerHTML = "Stop";
+        ssButton.innerHTML = "Pause";
     }
 }
 
@@ -155,7 +158,7 @@ function restartconf(restarter) {
 
 function endEarly() {
     let warningMessage = 'Are sure you would like to end early? The current time and counter value will be saved.' +
-        '<br><button id="yes" class="whitebutton">Yes</button><button id="no" class="bluebutton">No</button>'
+        '<br><button id="yes" class="whitebutton">&#10003;</button><button id="no" class="bluebutton">X</button>'
 
     confirmation.innerHTML = warningMessage;
     document.querySelector('#yes').addEventListener('click', function () {

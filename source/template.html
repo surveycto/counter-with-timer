@@ -4,36 +4,45 @@
 <div class="label default-question-text-size" id="label">{{{LABEL}}}</div>
 
 {{#MEDIAIMAGE}}
-    <img src="{{MEDIAIMAGE}}" />
+<img src="{{MEDIAIMAGE}}" />
 {{/MEDIAIMAGE}}
 
 {{#MEDIAAUDIO}}
-    <audio controls>
-        <source src="{{MEDIAAUDIO}}">
-        Your browser does not support the audio element.
-    </audio>
+<audio controls>
+    <source src="{{MEDIAAUDIO}}">
+    Your browser does not support the audio element.
+</audio>
 {{/MEDIAAUDIO}}
 
 {{#MEDIAVIDEO}}
-    <video width="100%" height="*" controls>
-        <source src="{{MEDIAVIDEO}}">
-        Your browser does not support the video tag.
-    </video>
+<video width="100%" height="*" controls>
+    <source src="{{MEDIAVIDEO}}">
+    Your browser does not support the video tag.
+</video>
 {{/MEDIAVIDEO}}
 
 <div class="hint default-hint-text-size" id="hint">{{{HINT}}}</div>
-<div id="timer" class="label default-question-text-size"></div>
-<div id="countdiv">Count:&nbsp;<span id="count">0</span></div>
+<table class="label default-question-text-size timer">
+    <tr>
+        <td style="padding-left:30px;">TIME LEFT: </td>
+        <td id="timer" style="width: 30px;text-align:right"></td>
+        <td id="unit" style="padding-right:30px;padding-left:5px"></td>
+    </tr>
+</table>
+<table class="label default-question-text-size counter">
+    <tr>
+        <td style="padding-left:30px;">COUNT: </td>
+        <td id="count" style="width: 30px;text-align:right;padding-right:30px;"></td>
+    </tr>
+</table>
 <div class="buttons label default-question-text-size">
     <button onclick="startStopTimer()" class="startstop" id="startstop">Start</button><br>
     <button onclick="countup()" class="counterup" id="counterup">Count +</button><br>
     <button onclick="countdown()" class="counterdown small" id="counterdown" style="font-size: 10pt;">Count -</button>
 </div>
 <div id="restartbuttons" class="buttons label default-question-text-size">
-    <button onclick="restartconf('timer')" id="restarttimer" class="small">Restart
-        timer</button>
-    <button onclick="restartconf('counter')"id="restartcounter" class="small">Restart
-        counter</button><br>
-        <button onclick="endEarly()" id="endearly" class="small endearly">End early</button>
+    <button onclick="restartconf('timer')" id="restarttimer" class="small">&#8634; time</button>
+    <button onclick="restartconf('counter')" id="restartcounter" class="small">&#8634; count</button><br>
+    <button onclick="endEarly()" id="endearly" class="endearly small">🛑</button>
     <div id="confirmation" style="margin-top: 10px;"></div>
 </div>
