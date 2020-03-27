@@ -1,6 +1,4 @@
-# Counter with timer (in alpha)
-
-*This plug-in is currently being tested, but has so far worked well.*
+# Counter with timer
 
 ![](extras/preview-images/paused.png)
 |<img src="extras/preview-images/running.png" width="100px">|<img src="extras/preview-images/confirm-restart.png" width="100px">|<img src="extras/preview-images/timer-end.png" width="100px">|
@@ -9,7 +7,7 @@
 
 ## Description
 
-Use this plug-in to add a timer to your field. It also includes a counter you can use to keep track of something while timing, with buttons to both count up and count down. You can use it to count words read, number of mistakes, or whatever else you need to count. The count will never go below 0.
+Use this field plug-in to add a timer to your field. It also includes a counter you can use to keep track of something while timing, with buttons to both count up and count down. You can use it to count words read, number of mistakes, or whatever else you need to count. The count will never go below 0.
 
 If an enumerator uses one of the restart buttons or the "End early" button, they will have to confirm the restart/ending. These buttons only appear when the timer is not running.
 
@@ -17,7 +15,7 @@ An answer is not set until the timer runs out, or "End early" is confirmed, so t
 
 You can customize the timer duration and unit used. See **Parameters** below for more details.
 
-The value this plug-in returns is a space-separated list:
+The value this field plug-in returns is a space-separated list:
 
 0. The count on the counter
 1. The time that was left on the timer
@@ -55,7 +53,7 @@ To create your own field plug-in using this as a template, follow these steps:
     * **Note:** be sure to update the `manifest.json` file as well.
 
 1. Zip the updated contents of the `source` directory.
-1. Rename the .zip file to *yourpluginname*.fieldplugin.zip (replace *yourpluginname* with the name you want to use for your plug-in).
+1. Rename the .zip file to *yourpluginname*.fieldplugin.zip (replace *yourpluginname* with the name you want to use for your field plug-in).
 1. You may then attach your new .fieldplugin.zip file to your form as normal.
 
 ## Parameters
