@@ -24,6 +24,8 @@ You can use the `selected-at()` function in order to get each individual value. 
 
     selected-at(${timer1}, 0)
 
+[![Download now](extras/other-images/download-button.png)](https://github.com/surveycto/launch-sms/raw/master/counterwithtimer.fieldplugin.zip)
+
 ## Default SurveyCTO feature support
 
 | Feature / Property | Support |
