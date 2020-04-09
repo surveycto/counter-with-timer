@@ -1,187 +1,265 @@
 /*fieldProperties = {
     'PARAMETERS': [
         {
-            'key': 'A',
+            'key': 'duration',
             'value': 1000
         },
         {
-            'key': 'B',
+            'key': 'time-unit',
             'value': 'ds'
         }
     ],
     'CURRENT_ANSWER': '10 1000'
-}// Above for testing only */
+}
 
-var timerDisp = document.querySelector('#timer');
+function getPluginParameter(param){
+    for(let p of fieldProperties.PARAMETERS){
+        let key = p.key
+        if(key == param){
+            return p.value;
+        }
+    }
+    return;
+}
+
+function setAnswer(ans){
+    console.log(ans);
+}
+
+// Above for testing only */
+// get the UI elements
+var timerDisp = document.querySelector('#stopwatch');
 var unitDisp = document.querySelector('#unit');
 var ssButton = document.querySelector('#startstop');
 var countDisp = document.querySelector('#count');
-var restartButtons = document.querySelector('#restartbuttons');
-var confirmation = document.querySelector('#confirmation');
-var endEarlyButton = document.querySelector('#endearly');
+var resetButtons = document.getElementsByClassName("restart-buttons");
+var resetConfBox = document.getElementById('resetConfirmation');
+var endEarlyButton = document.querySelector('#end-early');
+var confMesDiv = document.querySelector('#resetConfirmation');
+var confMessageP = document.querySelector('#confirmationMessage');
 
-var parameters = fieldProperties.PARAMETERS
-var numParam = parameters.length
+var endEarlyDiv = document.querySelector('#endEarlyConfirmation')
 
+// get parameters info
+var timeStart = getPluginParameter('duration') * 1000;
+var timeUnit = getPluginParameter('time-unit');
 
-var timeStart = 10000; //Default values may be overwritten depending on the number of paramaters given,
-var unit = 's'; //Default, may be changed
+// set up the timer and counter variables
 var round = 1000; //Default, may be changed
-var timeLeft; //Starts this way for the display.
 var timePassed = 0; //Time passed so far
-switch (numParam) {
-    case 2:
-        unit = fieldProperties.PARAMETERS[1].value;
-
-        if (unit == 'ms') {
-            //unit = ' milliseconds'
-            round = 1;
-        }
-        else if (unit == 'cs') {
-            //unit = ' centiseconds'
-            round = 10;
-        }
-        else if (unit == 'ds') {
-            //unit = ' deciseconds'
-            round = 100;
-        }
-        else {
-            //unit = ' seconds';
-            unit = 's';
-            round = 1000;
-        }
-    case 1:
-        timeStart = parameters[0].value * 1000; //Time limit on each field in seconds\
-}
-unitDisp.innerHTML = unit;
-timeLeft = timeStart;
-
-var complete = false;
 var counter = 0;
-
 var timerRunning = false;
-
 var startTime = 0; //This will get an actual value when the timer starts in startStopTimer();
+var timeLeft;
 
-if (fieldProperties.CURRENT_ANSWER != null) {
-    let parts = fieldProperties.CURRENT_ANSWER.match(/[^ ]+/g);
-    counter = parseInt(parts[0]);
-    timeLeft = parseInt(parts[1]);
-    timePassed = timeStart - timeLeft;
-    timerRunning = false;
+//// START stopwatch functions
+
+// Define what happens when the user resets the stopwatch
+function resetStopwatch() {
+    if (timerRunning) {
+        startStopTimer();
+        timePassed = 0;
+        startStopTimer();
+    } else {
+        timePassed = 0;
+    }
+    timerDisp.innerHTML = timePassed;
+    setAns();
+    resetConfBox.style.display = "none";
+    showResetButtons();
 }
-countDisp.innerHTML = counter
-
+// Set up the stopwatch
 setInterval(timer, 1);
-
 function timer() {
     if (timerRunning) {
         timePassed = Date.now() - startTime;
         timeLeft = timeStart - timePassed;
     }
 
-    if (timeLeft <= 0) { //Timer ended
+    if (timeLeft < 0) { //Timer ended
         timeLeft = 0;
         timerRunning = false;
         ssButton.disabled = true;
         ssButton.classList.add('buttonstop');
-        ssButton.innerHTML = "Stop!";
-        restartButtons.style.display = '';
+        ssButton.innerHTML = "Done!";
         endEarlyButton.style.display = 'none';
         setAns();
     }
-    timerDisp.innerHTML = Math.ceil(timeLeft / round);
+    timerDisp.innerHTML = Math.floor(timeLeft / round);
 }
-
+// Defines what happens when the stopwatch button is pressed. This can function as either a 'start' button or a 'stop' button, depending on whether or not the stopwatch is currently running. 
 function startStopTimer() {
     if (timerRunning) {
-        restartButtons.style.display = '';
         timerRunning = false;
-        ssButton.innerHTML = "Start";
+        ssButton.querySelector(".play-icon").style.display = "block";
+        ssButton.querySelector(".pause-icon").style.display = "none";
+        setAns();
     }
     else {
-        restartButtons.style.display = 'none';
-        confirmation.innerHTML = '';
         startTime = Date.now() - timePassed;
         timerRunning = true;
-        ssButton.innerHTML = "Pause";
+        ssButton.querySelector(".play-icon").style.display = "none";
+        ssButton.querySelector(".pause-icon").style.display = "block";
+        setAns();
     }
 }
 
+//// END stopwatch functions
+
+//// START counter functions
+
+// Define what happens when the user resets the counter
+function resetCounter() {
+    counter = 0;
+    countDisp.innerHTML = counter;
+    setAns();
+    resetConfBox.style.display = "none";
+    document.getElementById("counterdown").classList.add("btn-secondary");
+    showResetButtons();
+}
+// Define what happens when the user cancels a reset
+function cancelReset() {
+    resetConfBox.style.display = "none";
+    showResetButtons();
+}
+// Increase the current "count"
 function countup() {
     counter++;
     countDisp.innerHTML = counter;
-    if (timeLeft == 0) {
+    if (!timerRunning) {
         setAns();
     }
+    if (counter > 0) {
+        document.getElementById("counterdown").classList.remove("btn-secondary");
+    }
 }
-
+// Decrease the current "count"
 function countdown() {
-    counter--;
-    if (counter < 0) {
-        counter = 0;
+    if (counter > 0) {
+        counter--;
+    }
+    if (counter == 0) {
+        document.getElementById("counterdown").classList.add("btn-secondary");
     }
     countDisp.innerHTML = counter;
-
-    if (timeLeft == 0) {
+    if (!timerRunning) {
         setAns();
     }
 }
 
-function restartconf(restarter) {
-    let warningMessage = "Are sure you would like to restart the " + restarter + "?";
+//// END counter functions
 
-    warningMessage += '<br><button id="yes" class="whitebutton">Yes</button><button id="no" class="bluebutton">No</button>'
+//// START global functions
 
-    confirmation.innerHTML = warningMessage;
-
-    document.querySelector('#yes').addEventListener('click', function () {
-        if (restarter == 'timer') {
-            timerDisp.innerHTML = timeLeft = timeStart;
-            timePassed = 0;
-            ssButton.classList.remove('buttonstop');
-            ssButton.innerHTML = "Start";
-            ssButton.disabled = false;
-            endEarlyButton.style.display = '';
-            setAnswer()
-        }
-        else if (restarter == 'counter') {
-            countDisp.innerHTML = counter = 0;
-        }
-        confirmation.innerHTML = null;
-    });
-
-    document.querySelector('#no').addEventListener('click', function () {
-        confirmation.innerHTML = null;
-    });
+// define how to save the field's value in the form data
+function setAns(){
+    setAnswer(String(counter) + ' ' + String(timeLeft));
 }
 
-function endEarly() {
-    let warningMessage = 'Are sure you would like to end early? The current time and counter value will be saved.' +
-        '<br><button id="yes" class="whitebutton">&#10003;</button><button id="no" class="bluebutton">X</button>'
-
-    confirmation.innerHTML = warningMessage;
-    document.querySelector('#yes').addEventListener('click', function () {
-        setAns();
-        goToNextField();
-    });
-
-    document.querySelector('#no').addEventListener('click', function () {
-        confirmation.innerHTML = null;
-    });
-}
-
-
-
-function setAns() {
-    setAnswer(String(counter) + ' ' + String(timeLeft)); //Final answer is the value of the counter and the time left
-}
-
+// define what happens when the user attempts to clear the response 
 function clearAnswer() {
     if (timerRunning) {
         startStopTimer();
     }
-    setAnswer(null);
-    timePassed = 0;
-    counter = 0;
+    resetStopwatch()
+    resetCounter();
+    setAns();
 }
+
+// Hide the reset buttons from the UI
+function hideResetButtons() {
+    for (var i = 0; i < resetButtons.length; i++) {
+        resetButtons[i].style.display = "none";
+    }
+}
+// Show the reset buttons in the UI
+function showResetButtons() {
+    for (var i = 0; i < resetButtons.length; i++) {
+        resetButtons[i].style.display = "block";
+    }
+    endEarlyButton.style.display - 'block'
+}
+// Define the 'reset' function to allow either the stopwatch or the counter to use the same confirmation box
+function restartconf(restarter) {
+    let warningMessage = "Are sure you would like to reset the <strong>" + restarter + "</strong>?";
+    confMessageP.innerHTML = warningMessage;
+    hideResetButtons();
+    resetConfBox.style.display = "block";
+    if (restarter == "timer") {
+        document.getElementById("confirmReset").removeEventListener("click", resetCounter);
+        document.getElementById("confirmReset").addEventListener("click", resetStopwatch);
+    } else if (restarter == "counter") {
+        document.getElementById("confirmReset").removeEventListener("click", resetStopwatch);
+        document.getElementById("confirmReset").addEventListener("click", resetCounter);
+    }
+}
+
+function endEarly() {
+    endEarlyDiv.style.display = 'block';
+
+    document.querySelector('#cancelEnd').addEventListener('click', function(){
+        endEarlyDiv.style.display = 'none'
+    });
+
+    document.querySelector('#confirmEnd').addEventListener('click', function () {
+        setAns();
+        goToNextField();
+    });
+}
+
+//// END global functions
+
+//// START field setup/loading
+
+// If the field label or hint contain any HTML that isn't in the form definition, then the < and > characters will have been replaced by their HTML character entities, and the HTML won't render. We need to turn those HTML entities back to actual < and > characters so that the HTML renders properly. This will allow you to render HTML from field references in your field label or hint.
+function unEntity(str){
+    return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+}
+
+
+
+if (fieldProperties.LABEL) {
+    document.querySelector(".label").innerHTML = unEntity(fieldProperties.LABEL);
+}
+if (fieldProperties.HINT) {
+    document.querySelector(".hint").innerHTML = unEntity(fieldProperties.HINT);
+}
+
+// If the 'time-unit' parameter was supplied, make the appropriate adjustments
+if (timeUnit) {
+    if (timeUnit == 'ms') {
+        round = 1;
+    } else if (timeUnit == 'cs') {
+        round = 10;
+    } else if (timeUnit == 'ds') {
+        round = 100;
+    } else {
+        round = 1000;
+    }
+}
+
+if(timeStart == null){
+    timeStart = 10000;
+}
+timeLeft = timeStart;
+
+// When loading the field, check to see if there is already a stored value. If yes, update the appropriate variables.
+if (fieldProperties.CURRENT_ANSWER != null) {
+    let parts = fieldProperties.CURRENT_ANSWER.match(/[^ ]+/g);
+    counter = parseInt(parts[0]);
+    timePassed = parseInt(parts[1]);
+    timerRunning = false;
+}
+
+// If the current value of 'count' is above 0 when the field loads, the 'decrease count' button should be blue 
+if (counter > 0) {
+    document.getElementById("counterdown").classList.remove("btn-secondary");
+}
+
+// Show the current counter value
+countDisp.innerHTML = counter;
+
+// Show the current stopwatch value
+unitDisp.innerHTML = timeUnit;
+
+//// END field setup/loading

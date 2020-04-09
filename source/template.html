@@ -1,48 +1,147 @@
 <!--link rel="stylesheet" type="text/css" href="style.css">
 <script src="script.js" defer></script-->
 
-<div class="label default-question-text-size" id="label">{{{LABEL}}}</div>
+<div class="label default-question-text-size">{{{LABEL}}}</div>
 
+<!-- If there is an image specified in the media:image column, show it here -->
 {{#MEDIAIMAGE}}
-<img src="{{MEDIAIMAGE}}" />
+    <img src="{{MEDIAIMAGE}}" />
 {{/MEDIAIMAGE}}
 
+<!-- If there is audio specified in the media:audio column, show it here -->
 {{#MEDIAAUDIO}}
-<audio controls>
-    <source src="{{MEDIAAUDIO}}">
-    Your browser does not support the audio element.
-</audio>
+    <audio controls controlsList="nodownload">
+        <source src="{{MEDIAAUDIO}}">
+        Your browser does not support the audio element.
+    </audio>
 {{/MEDIAAUDIO}}
 
+<!-- If there is a video specified in the media:video column, show it here -->
 {{#MEDIAVIDEO}}
-<video width="100%" height="*" controls>
-    <source src="{{MEDIAVIDEO}}">
-    Your browser does not support the video tag.
-</video>
+    <video width="100%" height="*" controls controlsList="nodownload">
+        <source src="{{MEDIAVIDEO}}">
+        Your browser does not support the video tag.
+    </video>
 {{/MEDIAVIDEO}}
 
-<div class="hint default-hint-text-size" id="hint">{{{HINT}}}</div>
-<table class="label default-question-text-size timer">
-    <tr>
-        <td style="padding-left:30px;">TIME LEFT: </td>
-        <td id="timer" style="width: 30px;text-align:right"></td>
-        <td id="unit" style="padding-right:30px;padding-left:5px"></td>
-    </tr>
-</table>
-<table class="label default-question-text-size counter">
-    <tr>
-        <td style="padding-left:30px;">COUNT: </td>
-        <td id="count" style="width: 30px;text-align:right;padding-right:30px;"></td>
-    </tr>
-</table>
-<div class="buttons label default-question-text-size">
-    <button onclick="startStopTimer()" class="startstop" id="startstop">Start</button><br>
-    <button onclick="countup()" class="counterup" id="counterup">Count +</button><br>
-    <button onclick="countdown()" class="counterdown small" id="counterdown" style="font-size: 10pt;">Count -</button>
+<div class="hint default-hint-text-size">{{{HINT}}}</div>
+
+<div class="container">
+    <div class="col section-stopwatch">
+        <div class="section-icon-container">
+            <svg class="icon"><use xlink:href="#icon-stopwatch" /></svg>
+        </div>
+        <div class="current-value-container">
+            <div class="current-value">
+                <span id="stopwatch"></span>
+                <span id="unit"></span>
+            </div>
+        </div>
+        <div class="primary-action-container">
+            <button id="startstop" class="btn btn-primary" onclick="startStopTimer()">
+                <svg class="icon play-icon"><use xlink:href="#icon-play" /></svg>
+                <svg class="icon pause-icon" style="display:none;"><use xlink:href="#icon-pause" /></svg>
+            </button>
+        </div>
+        <div class="secondary-action-container restart-buttons">
+            <button class="btn btn-secondary btn-small" onclick="restartconf('timer')" >
+                <svg class="icon"><use xlink:href="#icon-undo" /></svg> 
+            </button>
+        </div>
+    </div>
+    <div class="col section-counter">
+        <div class="section-icon-container">
+            <svg class="icon"><use xlink:href="#icon-tally" /></svg>
+        </div>
+        <div class="current-value-container">
+            <div class="current-value">
+                <span id="count"></span>
+            </div>
+        </div>
+        <div class="primary-action-container">
+            <button id="counterup" class="btn btn-primary" onclick="countup()">
+                <svg class="icon"><use xlink:href="#icon-up-arrow" /></svg>
+            </button>
+            <button id="counterdown" class="btn btn-primary btn-secondary" onclick="countdown()">
+                <svg class="icon"><use xlink:href="#icon-down-arrow" /></svg>
+            </button>
+        </div>
+        <div class="secondary-action-container restart-buttons">
+            <button class="btn btn-secondary btn-small" onclick="restartconf('counter')">
+                <svg class="icon"><use xlink:href="#icon-undo" /></svg> 
+            </button>
+        </div>
+    </div>
 </div>
-<div id="restartbuttons" class="buttons label default-question-text-size">
-    <button onclick="restartconf('timer')" id="restarttimer" class="small">&#8634; time</button>
-    <button onclick="restartconf('counter')" id="restartcounter" class="small">&#8634; count</button><br>
-    <button onclick="endEarly()" id="endearly" class="endearly small">🛑</button>
-    <div id="confirmation" style="margin-top: 10px;"></div>
+
+<div style="text-align: center;"><!--End early-->
+    <svg id="end-early" class="end-early" onclick="endEarly()" width="76px" height="76px" viewBox="0 0 76 76" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <polygon id="Path" stroke="#000000" points="21.9030336 1 54.0860579 1 75 22.9827153 75 53.651326 54.0860579 75 21.9030336 75 1 53.651326 1 22.9827153"></polygon>
+        <circle id="Oval" stroke="#FFFFFF" stroke-width="4" cx="38" cy="38" r="15"></circle>
+        <rect id="Rectangle" fill="#FFFFFF" x="31" y="31" width="14" height="14"></rect>
+    </svg>
 </div>
+
+<div class="container">
+    <div class="col center" id="resetConfirmation" style="display: none;">
+        <p id="confirmationMessage">Are you sure you want to restart the stopwatch?</p>
+        <div class="container center">
+            <button id="cancelReset" class="btn btn-secondary" onclick="cancelReset()">
+                Cancel
+            </button>
+            <button id="confirmReset" class="btn btn-danger">
+                Reset
+            </button>
+        </div>
+    </div>
+</div>
+<div class="container"><!--Confirm end early-->
+    <div class="col center" id="endEarlyConfirmation" style="display: none;">
+        <p id="confirmationMessageEE">Are you sure you would like to end early? The current time and counter value will be saved.</p>
+        <div class="container center">
+            <button id="cancelEnd" class="btn btn-secondary" onclick="cancelReset()">
+                Cancel
+            </button>
+            <button id="confirmEnd" class="btn btn-danger">
+                OK
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Below are the definitions of the SVG icons that we have used in the rest of the template. -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="icon-stopwatch" viewBox="0 0 48 48">
+        <path d="M29.190914,2 C29.7620335,2 30.2293131,2.4640625 30.2293131,3.03125 L30.2293131,6.46875 C30.2293131,7.0359375 29.7620335,7.5 29.190914,7.5 L26.7679827,7.5 L26.7679827,10.4648438 C30.01298,10.9632812 32.9724175,12.3210937 35.3953488,14.2976562 L37.7750135,11.934375 C38.1817198,11.5304687 38.8393726,11.5304687 39.246079,11.934375 L41.6949703,14.3664063 C42.1016766,14.7703125 42.1016766,15.4234375 41.6949703,15.8273438 L39.1508924,18.3539063 L39.0989724,18.4054688 C40.9334776,21.1898438 41.9978367,24.5328125 41.9978367,28.125 C41.9978367,37.9992187 33.94159,46 23.9989183,46 C14.0562466,46 6,37.9992187 6,28.125 C6,19.1875 12.6024878,11.7796875 21.229854,10.4648438 L21.229854,7.5 L18.8069227,7.5 C18.2358031,7.5 17.7685235,7.0359375 17.7685235,6.46875 L17.7685235,3.03125 C17.7685235,2.4640625 18.2358031,2 18.8069227,2 L29.190914,2 Z M24,14.5 C16.2680135,14.5 10,20.5441559 10,28 C10,35.4558441 16.2680135,41.5 24,41.5 C31.7319865,41.5 38,35.4558441 38,28 C38,20.5441559 31.7319865,14.5 24,14.5 Z M27,30.974359 L27,18.025641 C27,17.4615385 26.49375,17 25.875,17 L22.125,17 C21.50625,17 21,17.4615385 21,18.025641 L21,30.974359 C21,31.5384615 21.50625,32 22.125,32 L25.875,32 C26.49375,32 27,31.5384615 27,30.974359 Z" fill-rule="nonzero"></path>
+    </symbol>
+    <symbol id="icon-tally" viewBox="0 0 48 48">
+        <path d="M40,6.5 C41.0543618,6.5 41.9181651,7.31587779 41.9945143,8.35073766 L42,8.5 L41.9996073,12.104 L44.5566955,10.7364307 C45.5306879,10.215458 46.7425966,10.5827031 47.2635693,11.5566955 C47.7597338,12.4843073 47.4502585,13.6277162 46.5782883,14.1845447 L46.4433045,14.2635693 L41.9996073,16.639 L42,40.5 C42,41.6045695 41.1045695,42.5 40,42.5 C38.9456382,42.5 38.0818349,41.6841222 38.0054857,40.6492623 L38,40.5 L37.9996073,18.779 L30.9996073,22.523 L31,40.5 C31,41.6045695 30.1045695,42.5 29,42.5 C27.9456382,42.5 27.0818349,41.6841222 27.0054857,40.6492623 L27,40.5 L26.9996073,24.663 L20.9996073,27.872 L21,40.5 C21,41.6045695 20.1045695,42.5 19,42.5 C17.9456382,42.5 17.0818349,41.6841222 17.0054857,40.6492623 L17,40.5 L16.9996073,30.011 L10.4996073,33.488 L10.5,40.5 C10.5,41.6045695 9.6045695,42.5 8.5,42.5 C7.4456382,42.5 6.58183488,41.6841222 6.50548574,40.6492623 L6.5,40.5 L6.49960732,35.628 L3.4433045,37.2635693 C2.46931208,37.784542 1.25740341,37.4172969 0.736430716,36.4433045 C0.240266249,35.5156927 0.549741458,34.3722838 1.42171165,33.8154553 L1.5566955,33.7364307 L6.49960732,31.092 L6.5,8.5 C6.5,7.3954305 7.3954305,6.5 8.5,6.5 C9.5543618,6.5 10.4181651,7.31587779 10.4945143,8.35073766 L10.5,8.5 L10.4996073,28.953 L16.9996073,25.476 L17,8.5 C17,7.3954305 17.8954305,6.5 19,6.5 C20.0543618,6.5 20.9181651,7.31587779 20.9945143,8.35073766 L21,8.5 L20.9996073,23.337 L26.9996073,20.128 L27,8.5 C27,7.3954305 27.8954305,6.5 29,6.5 C30.0543618,6.5 30.9181651,7.31587779 30.9945143,8.35073766 L31,8.5 L30.9996073,17.988 L37.9996073,14.244 L38,8.5 C38,7.3954305 38.8954305,6.5 40,6.5 Z"  fill-rule="nonzero"></path>
+    </symbol>
+    <symbol id="icon-play" viewBox="0 0 36 36">
+        <path d="M26.1351562,16.734375 L13.7601562,9.2109375 C12.6492187,8.5921875 11.25,9.38671875 11.25,10.6875 L11.25,25.3125 C11.25,26.60625 12.6421875,27.4078125 13.7601562,26.7890625 L26.1351562,19.6875 C27.2882812,19.0476562 27.2882812,17.38125 26.1351562,16.734375 Z" fill-rule="nonzero"></path>
+        <path d="M18,0.5625 C27.6328125,0.5625 35.4375,8.3671875 35.4375,18 C35.4375,27.6328125 27.6328125,35.4375 18,35.4375 C8.3671875,35.4375 0.5625,27.6328125 0.5625,18 C0.5625,8.3671875 8.3671875,0.5625 18,0.5625 Z M18,3.9375 C10.2304688,3.9375 3.9375,10.2304688 3.9375,18 C3.9375,25.7695312 10.2304688,32.0625 18,32.0625 C25.7695312,32.0625 32.0625,25.7695312 32.0625,18 C32.0625,10.2304688 25.7695312,3.9375 18,3.9375 Z" fill-rule="nonzero"></path>
+    </symbol>
+    <symbol id="icon-pause" viewBox="0 0 36 36">
+        <path d="M18,0.5625 C27.6328125,0.5625 35.4375,8.3671875 35.4375,18 C35.4375,27.6328125 27.6328125,35.4375 18,35.4375 C8.3671875,35.4375 0.5625,27.6328125 0.5625,18 C0.5625,8.3671875 8.3671875,0.5625 18,0.5625 Z M18,3.9375 C10.2304688,3.9375 3.9375,10.2304688 3.9375,18 C3.9375,25.7695312 10.2304688,32.0625 18,32.0625 C25.7695312,32.0625 32.0625,25.7695312 32.0625,18 C32.0625,10.2304688 25.7695312,3.9375 18,3.9375 Z" fill-rule="nonzero"></path>
+        <path d="M24.75,12.375 L24.75,23.625 C24.75,24.24375 24.24375,24.75 23.625,24.75 L20.25,24.75 C19.63125,24.75 19.125,24.24375 19.125,23.625 L19.125,12.375 C19.125,11.75625 19.63125,11.25 20.25,11.25 L23.625,11.25 C24.24375,11.25 24.75,11.75625 24.75,12.375 Z" fill-rule="nonzero"></path>
+        <path d="M16.875,12.375 L16.875,23.625 C16.875,24.24375 16.36875,24.75 15.75,24.75 L12.375,24.75 C11.75625,24.75 11.25,24.24375 11.25,23.625 L11.25,12.375 C11.25,11.75625 11.75625,11.25 12.375,11.25 L15.75,11.25 C16.36875,11.25 16.875,11.75625 16.875,12.375 Z" fill-rule="nonzero"></path>
+    </symbol>
+    <symbol id="icon-up-arrow" viewBox="0 0 36 36">
+        <path d="M18,0.5625 C27.6328125,0.5625 35.4375,8.3671875 35.4375,18 C35.4375,27.6328125 27.6328125,35.4375 18,35.4375 C8.3671875,35.4375 0.5625,27.6328125 0.5625,18 C0.5625,8.3671875 8.3671875,0.5625 18,0.5625 Z M18,3.9375 C10.2304688,3.9375 3.9375,10.2304688 3.9375,18 C3.9375,25.7695312 10.2304688,32.0625 18,32.0625 C25.7695312,32.0625 32.0625,25.7695312 32.0625,18 C32.0625,10.2304688 25.7695312,3.9375 18,3.9375 Z" fill-rule="nonzero"></path>
+        <path d="M19.40625,27 L16.59375,27 C16.1296875,27 15.75,26.6203125 15.75,26.15625 L15.75,18 L11.0390625,18 C10.2867187,18 9.9140625,17.0929687 10.4414062,16.5585937 L17.4023437,9.59765625 C17.7328125,9.2671875 18.2671875,9.2671875 18.5976562,9.59765625 L25.5585937,16.5585937 C26.0929687,17.0929687 25.7132812,18 24.9609375,18 L20.25,18 L20.25,26.15625 C20.25,26.6203125 19.8703125,27 19.40625,27 Z" fill-rule="nonzero"></path>
+    </symbol>
+    <symbol id="icon-down-arrow" viewBox="0 0 36 36">
+        <path d="M18,0.5625 C27.6328125,0.5625 35.4375,8.3671875 35.4375,18 C35.4375,27.6328125 27.6328125,35.4375 18,35.4375 C8.3671875,35.4375 0.5625,27.6328125 0.5625,18 C0.5625,8.3671875 8.3671875,0.5625 18,0.5625 Z M18,3.9375 C10.2304688,3.9375 3.9375,10.2304688 3.9375,18 C3.9375,25.7695312 10.2304688,32.0625 18,32.0625 C25.7695312,32.0625 32.0625,25.7695312 32.0625,18 C32.0625,10.2304688 25.7695312,3.9375 18,3.9375 Z" fill-rule="nonzero"></path>
+        <path d="M15.75,9.84375 L15.75,18 L11.0390625,18 C10.2867187,18 9.9140625,18.9070312 10.4414062,19.4414062 L17.4023437,26.4023438 C17.7328125,26.7328125 18.2671875,26.7328125 18.5976562,26.4023438 L25.5585937,19.4414062 C26.0929687,18.9070312 25.7132812,18 24.9609375,18 L20.25,18 L20.25,9.84375 C20.25,9.3796875 19.8703125,9 19.40625,9 L16.59375,9 C16.1296875,9 15.75,9.3796875 15.75,9.84375 Z" fill-rule="nonzero"></path>
+    </symbol>
+    <symbol id="icon-undo" viewBox="0 0 36 36">
+        <path d="M15.5208125,16.2708125 L3,16.2708125 C2.5858125,16.2708125 2.25,15.935 2.25,15.5208125 L2.25,3 C2.25,2.5858125 2.5858125,2.25 3,2.25 L6,2.25 C6.4141875,2.25 6.75,2.5858125 6.75,3 L6.75,7.882 C9.6108125,4.7049375 13.76625,2.716875 18.3859375,2.7504375 C26.9425625,2.8125625 33.7889375,9.726875 33.7707862,18.2836875 C33.7525625,26.828625 26.82,33.75 18.2708125,33.75 C14.26525,33.75 10.6148125,32.2304375 7.8639375,29.7365625 C7.54525,29.4476875 7.5305625,28.9519375 7.83475,28.6478125 L9.9576875,26.524875 C10.2373125,26.24525 10.6865625,26.2300625 10.98275,26.4920625 C12.9225,28.2085 15.47375,29.25 18.2708125,29.25 C24.3500625,29.25 29.2708125,24.33025 29.2708125,18.25 C29.2708125,12.1708125 24.3510625,7.25 18.2708125,7.25 C14.6148125,7.25 11.3783125,9.02975 9.3786875,11.7708125 L15.5208125,11.7708125 C15.935,11.7708125 16.2708125,12.106625 16.2708125,12.5208125 L16.2708125,15.5208125 C16.2708125,15.935 15.935,16.2708125 15.5208125,16.2708125 Z" fill-rule="nonzero"></path>
+    </symbol>
+    <symbol id="icon-endearly" viewBox="0 0 75 75">
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Path" stroke="#000000" fill="#920C0C" points="21.6205602 1 53.3686787 1 74 22.6856516 74 52.9398216 53.3686787 74 21.6205602 74 1 52.9398216 1 22.6856516"></polygon>
+        <ellipse id="Oval" stroke="#FFFFFF" stroke-width="4" cx="37.5" cy="37.5" rx="21.5" ry="22.5"></ellipse>
+        <rect id="Rectangle" fill="#FFFFFF" x="28" y="28" width="20" height="20"></rect>
+    </g>
+    </symbol>
+</svg>
