@@ -37,12 +37,20 @@ var resetConfBox = document.getElementById('resetConfirmation');
 var endEarlyButton = document.querySelector('#end-early');
 var confMesDiv = document.querySelector('#resetConfirmation');
 var confMessageP = document.querySelector('#confirmationMessage');
-
 var endEarlyDiv = document.querySelector('#endEarlyConfirmation')
 
+var metadata = getMetaData();
+
 // get parameters info
-var timeStart = getPluginParameter('duration') * 1000;
+var timeStart;
 var timeUnit = getPluginParameter('time-unit');
+
+if(metadata == null){
+    timeStart = getPluginParameter('duration') * 1000;
+}
+else{
+    timeStart = parseInt(metadata);
+}
 
 // set up the timer and counter variables
 var round = 1000; //Default, may be changed
@@ -64,7 +72,7 @@ function resetStopwatch() {
         timePassed = 0;
     }
     timerDisp.innerHTML = timePassed;
-    setAns();
+    setAnswer('');
     resetConfBox.style.display = "none";
     showResetButtons();
 }
@@ -74,6 +82,7 @@ function timer() {
     if (timerRunning) {
         timePassed = Date.now() - startTime;
         timeLeft = timeStart - timePassed;
+        setMetaData(timeLeft);
     }
 
     if (timeLeft < 0) { //Timer ended
@@ -93,14 +102,12 @@ function startStopTimer() {
         timerRunning = false;
         ssButton.querySelector(".play-icon").style.display = "block";
         ssButton.querySelector(".pause-icon").style.display = "none";
-        setAns();
     }
     else {
         startTime = Date.now() - timePassed;
         timerRunning = true;
         ssButton.querySelector(".play-icon").style.display = "none";
         ssButton.querySelector(".pause-icon").style.display = "block";
-        setAns();
     }
 }
 
@@ -112,7 +119,9 @@ function startStopTimer() {
 function resetCounter() {
     counter = 0;
     countDisp.innerHTML = counter;
-    setAns();
+    if(timeLeft = 0){
+        setAns();
+    }
     resetConfBox.style.display = "none";
     document.getElementById("counterdown").classList.add("btn-secondary");
     showResetButtons();
@@ -126,7 +135,7 @@ function cancelReset() {
 function countup() {
     counter++;
     countDisp.innerHTML = counter;
-    if (!timerRunning) {
+    if (timeLeft = 0) {
         setAns();
     }
     if (counter > 0) {
@@ -142,7 +151,7 @@ function countdown() {
         document.getElementById("counterdown").classList.add("btn-secondary");
     }
     countDisp.innerHTML = counter;
-    if (!timerRunning) {
+    if (timeLeft = 0) {
         setAns();
     }
 }
@@ -163,7 +172,7 @@ function clearAnswer() {
     }
     resetStopwatch()
     resetCounter();
-    setAns();
+    setAnswer('');
 }
 
 // Hide the reset buttons from the UI
