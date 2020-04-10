@@ -1,7 +1,8 @@
 # Counter with timer
 
-![](extras/preview-images/paused.png)
-|<img src="extras/preview-images/running.png" width="100px">|<img src="extras/preview-images/confirm-reset.png" width="100px">|<img src="extras/preview-images/end-early.png" width="100px">|<img src="extras/preview-images/timer-end.png" width="100px">|
+![](extras/preview-images/paused.jpg)
+
+|<img src="extras/preview-images/running.jpg" width="100px">|<img src="extras/preview-images/confirm-reset.jpg" width="100px">|<img src="extras/preview-images/end-early.jpg" width="100px">|<img src="extras/preview-images/timer-end.jpg" width="100px">|
 |:---:|:---:|:---:|:---:|
 |Running|Warning|End early|Ended|
 
