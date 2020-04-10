@@ -2,14 +2,23 @@
     'PARAMETERS': [
         {
             'key': 'duration',
-            'value': 1000
+            'value': 10
         },
         {
             'key': 'time-unit',
             'value': 'ds'
         }
     ],
-    'CURRENT_ANSWER': '10 1000'
+    'CURRENT_ANSWER': '10 1000',
+    'METADATA': '10 1000' //How much time was left last time
+}
+
+function getMetaData(){
+    return fieldProperties.METADATA
+}
+
+function setMetaData(value){
+    fieldProperties.METADATA = value;
 }
 
 function getPluginParameter(param){
@@ -23,7 +32,11 @@ function getPluginParameter(param){
 }
 
 function setAnswer(ans){
-    console.log(ans);
+    console.log("Set answer to: " + ans);
+}
+
+function goToNextField(){
+    console.log("Moved to next field");
 }
 
 // Above for testing only */
@@ -42,15 +55,8 @@ var endEarlyDiv = document.querySelector('#endEarlyConfirmation')
 var metadata = getMetaData();
 
 // get parameters info
-var timeStart;
+var timeStart = getPluginParameter('duration') * 1000;
 var timeUnit = getPluginParameter('time-unit');
-
-if(metadata == null){
-    timeStart = getPluginParameter('duration') * 1000;
-}
-else{
-    timeStart = parseInt(metadata);
-}
 
 // set up the timer and counter variables
 var round = 1000; //Default, may be changed
@@ -60,6 +66,8 @@ var timerRunning = false;
 var startTime = 0; //This will get an actual value when the timer starts in startStopTimer();
 var timeLeft;
 
+var metadata = getMetaData();
+
 //// START stopwatch functions
 
 // Define what happens when the user resets the stopwatch
@@ -68,12 +76,17 @@ function resetStopwatch() {
         startStopTimer();
         timePassed = 0;
         startStopTimer();
-    } else {
-        timePassed = 0;
     }
-    timerDisp.innerHTML = timePassed;
+
+    timePassed = 0;
+    timeStart = getPluginParameter('duration') * 1000
+    timerDisp.innerHTML = timeStart;
     setAnswer('');
     resetConfBox.style.display = "none";
+    ssButton.classList.remove("btn-secondary");
+    ssButton.disabled = false;
+    ssButton.querySelector(".play-icon").style.display = "block";
+    ssButton.querySelector(".pause-icon").style.display = "none";
     showResetButtons();
 }
 // Set up the stopwatch
@@ -81,16 +94,16 @@ setInterval(timer, 1);
 function timer() {
     if (timerRunning) {
         timePassed = Date.now() - startTime;
-        timeLeft = timeStart - timePassed;
-        setMetaData(timeLeft);
     }
+
+    timeLeft = timeStart - timePassed;
+    setMeta();
 
     if (timeLeft < 0) { //Timer ended
         timeLeft = 0;
         timerRunning = false;
         ssButton.disabled = true;
-        ssButton.classList.add('buttonstop');
-        ssButton.innerHTML = "Done!";
+        ssButton.classList.add("btn-secondary");
         endEarlyButton.style.display = 'none';
         setAns();
     }
@@ -119,7 +132,7 @@ function startStopTimer() {
 function resetCounter() {
     counter = 0;
     countDisp.innerHTML = counter;
-    if(timeLeft = 0){
+    if(timeLeft == 0){
         setAns();
     }
     resetConfBox.style.display = "none";
@@ -135,12 +148,13 @@ function cancelReset() {
 function countup() {
     counter++;
     countDisp.innerHTML = counter;
-    if (timeLeft = 0) {
+    if (timeLeft == 0) {
         setAns();
     }
     if (counter > 0) {
         document.getElementById("counterdown").classList.remove("btn-secondary");
     }
+    setMeta();
 }
 // Decrease the current "count"
 function countdown() {
@@ -151,9 +165,10 @@ function countdown() {
         document.getElementById("counterdown").classList.add("btn-secondary");
     }
     countDisp.innerHTML = counter;
-    if (timeLeft = 0) {
+    if (timeLeft == 0) {
         setAns();
     }
+    setMeta();
 }
 
 //// END counter functions
@@ -162,7 +177,14 @@ function countdown() {
 
 // define how to save the field's value in the form data
 function setAns(){
-    setAnswer(String(counter) + ' ' + String(timeLeft));
+    let ans = String(counter) + ' ' + String(timeLeft);
+    setMetaData(ans);
+    setAnswer(ans);
+}
+
+function setMeta(){
+    let ans = String(counter) + ' ' + String(timeLeft);
+    setMetaData(ans)
 }
 
 // define what happens when the user attempts to clear the response 
@@ -186,7 +208,7 @@ function showResetButtons() {
     for (var i = 0; i < resetButtons.length; i++) {
         resetButtons[i].style.display = "block";
     }
-    endEarlyButton.style.display - 'block'
+    endEarlyButton.style.display = ''
 }
 // Define the 'reset' function to allow either the stopwatch or the counter to use the same confirmation box
 function restartconf(restarter) {
@@ -226,6 +248,21 @@ function unEntity(str){
 }
 
 
+// When loading the field, check to see if there is already a stored value. If yes, update the appropriate variables.
+if(metadata == null){
+    timeStart = getPluginParameter('duration') * 1000
+}
+else{
+    let parts = metadata.match(/[^ ]+/g);
+    counter = parseInt(parts[0]);
+    timeStart = parseInt(parts[1]);
+
+    if(timeStart == 0){
+        ssButton.disabled = true;
+        ssButton.classList.add("btn-secondary");
+        endEarlyButton.style.display = 'none';
+    }
+}
 
 if (fieldProperties.LABEL) {
     document.querySelector(".label").innerHTML = unEntity(fieldProperties.LABEL);
@@ -251,14 +288,6 @@ if(timeStart == null){
     timeStart = 10000;
 }
 timeLeft = timeStart;
-
-// When loading the field, check to see if there is already a stored value. If yes, update the appropriate variables.
-if (fieldProperties.CURRENT_ANSWER != null) {
-    let parts = fieldProperties.CURRENT_ANSWER.match(/[^ ]+/g);
-    counter = parseInt(parts[0]);
-    timePassed = parseInt(parts[1]);
-    timerRunning = false;
-}
 
 // If the current value of 'count' is above 0 when the field loads, the 'decrease count' button should be blue 
 if (counter > 0) {
