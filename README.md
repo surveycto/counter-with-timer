@@ -1,6 +1,6 @@
 # Counter with timer
 
-![](extras/preview-images/paused.jpg)
+![](extras/preview-images/main.jpg)
 
 |<img src="extras/preview-images/running.jpg" width="100px">|<img src="extras/preview-images/confirm-reset.jpg" width="100px">|<img src="extras/preview-images/end-early.jpg" width="100px">|<img src="extras/preview-images/timer-end.jpg" width="100px">|
 |:---:|:---:|:---:|:---:|
