@@ -1,15 +1,15 @@
 # Counter with timer
 
 ![](extras/preview-images/paused.png)
-|<img src="extras/preview-images/running.png" width="100px">|<img src="extras/preview-images/confirm-restart.png" width="100px">|<img src="extras/preview-images/timer-end.png" width="100px">|
-|:---:|:---:|:---:|
-|Running|Warning|Ended|
+|<img src="extras/preview-images/running.png" width="100px">|<img src="extras/preview-images/confirm-reset.png" width="100px">|<img src="extras/preview-images/end-early.png" width="100px">|<img src="extras/preview-images/timer-end.png" width="100px">|
+|:---:|:---:|:---:|:---:|
+|Running|Warning|End early|Ended|
 
 ## Description
 
 Use this field plug-in to add a timer to your field. It also includes a counter you can use to keep track of something while timing, with buttons to both count up and count down. You can use it to count words read, number of mistakes, or whatever else you need to count. The count will never go below 0.
 
-If an enumerator uses one of the restart buttons or the "End early" button (the hex octogon with a circle and square inside), they will have to confirm the restart/ending.
+If an enumerator uses one of the reset buttons or the "End early" button (the hex octogon with a circle and square inside), they will have to confirm the reset/ending.
 
 An answer is not set until the timer runs out, or "End early" is confirmed, so the enumerator cannot move on from that field until then. If they leave the field, they can come back and continue where they left off with the same amount of time left and the same count value. If they end early and come back, and the time left and/or counter value is changed, they will need to tap/click the "End early" button again to save a new answer, or let the timer run out.
 
