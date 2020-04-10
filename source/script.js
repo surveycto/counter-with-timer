@@ -72,11 +72,8 @@ var metadata = getMetaData();
 
 // Define what happens when the user resets the stopwatch
 function resetStopwatch() {
-    if (timerRunning) {
-        startStopTimer();
-        timePassed = 0;
-        startStopTimer();
-    }
+    startStopTimer(0);
+    timePassed = 0;
 
     timePassed = 0;
     timeStart = getPluginParameter('duration') * 1000
@@ -110,8 +107,8 @@ function timer() {
     timerDisp.innerHTML = Math.floor(timeLeft / round);
 }
 // Defines what happens when the stopwatch button is pressed. This can function as either a 'start' button or a 'stop' button, depending on whether or not the stopwatch is currently running. 
-function startStopTimer() {
-    if (timerRunning) {
+function startStopTimer(startOrStop) {
+    if (timerRunning || (startOrStop == 0)) {
         timerRunning = false;
         ssButton.querySelector(".play-icon").style.display = "block";
         ssButton.querySelector(".pause-icon").style.display = "none";
@@ -175,6 +172,13 @@ function countdown() {
 
 //// START global functions
 
+// define what happens when the user attempts to clear the response 
+function clearAnswer() {
+    resetStopwatch()
+    resetCounter();
+    setAnswer('');
+}
+
 // define how to save the field's value in the form data
 function setAns(){
     let ans = String(counter) + ' ' + String(timeLeft);
@@ -184,17 +188,7 @@ function setAns(){
 
 function setMeta(){
     let ans = String(counter) + ' ' + String(timeLeft);
-    setMetaData(ans)
-}
-
-// define what happens when the user attempts to clear the response 
-function clearAnswer() {
-    if (timerRunning) {
-        startStopTimer();
-    }
-    resetStopwatch()
-    resetCounter();
-    setAnswer('');
+    setMetaData(ans);
 }
 
 // Hide the reset buttons from the UI
