@@ -9,9 +9,9 @@
 
 Use this field plug-in to add a timer to your field. It also includes a counter you can use to keep track of something while timing, with buttons to both count up and count down. You can use it to count words read, number of mistakes, or whatever else you need to count. The count will never go below 0.
 
-If an enumerator uses one of the restart buttons or the "End early" button, they will have to confirm the restart/ending. These buttons only appear when the timer is not running.
+If an enumerator uses one of the restart buttons or the "End early" button (the hex octogon with a circle and square inside), they will have to confirm the restart/ending.
 
-An answer is not set until the timer runs out, or "End early" is confirmed, so the enumerator cannot move on from that field until then. If they "End early", they can come back and continue where they left off with the same amount of time left and the same count value.
+An answer is not set until the timer runs out, or "End early" is confirmed, so the enumerator cannot move on from that field until then. If they leave the field, they can come back and continue where they left off with the same amount of time left and the same count value. If they end early and come back, and the time left and/or counter value is changed, they will need to tap/click the "End early" button again to save a new answer, or let the timer run out.
 
 You can customize the timer duration and unit used. See **Parameters** below for more details.
 
@@ -62,8 +62,11 @@ To create your own field plug-in using this as a template, follow these steps:
 
 This field takes two parameters:
 
-1. Duration in seconds
-2. Display unit
+|Name|Description|
+|:---|:---|
+|`duration`|Duration in seconds|
+|`time-unit`|Display unit for the time|
+
 
 For the timer, no matter the unit you are using, the duration must be given in seconds. For example, if you would like the duration to be 20 seconds, the value of this parameter will be `20`. If you would like the duration to be 5,500 milliseconds, the parameter should be `5.5`.
 
