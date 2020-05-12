@@ -85,7 +85,7 @@ Even though the duration entered is 15 seconds, it will be displayed as "1500 cs
 
 ## More resources
 
-* **sample form**  
+* **Sample form**  
 You can find a form definition in this repo here: [extras/sample-form](extras/sample-form).
 
 * **Developer documentation**  
