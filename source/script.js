@@ -52,8 +52,6 @@ var confMesDiv = document.querySelector('#resetConfirmation');
 var confMessageP = document.querySelector('#confirmationMessage');
 var endEarlyDiv = document.querySelector('#endEarlyConfirmation')
 
-var metadata = getMetaData();
-
 // get parameters info
 var timeStart = getPluginParameter('duration') * 1000;
 var timeUnit = getPluginParameter('time-unit');

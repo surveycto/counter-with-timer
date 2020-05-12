@@ -1,7 +1,7 @@
 <!--link rel="stylesheet" type="text/css" href="style.css">
 <script src="script.js" defer></script-->
 
-<div class="label default-question-text-size">{{{LABEL}}}</div>
+<div class="label default-question-text-size" dir="auto">{{{LABEL}}}</div>
 
 <!-- If there is an image specified in the media:image column, show it here -->
 {{#MEDIAIMAGE}}
@@ -24,7 +24,7 @@
     </video>
 {{/MEDIAVIDEO}}
 
-<div class="hint default-hint-text-size">{{{HINT}}}</div>
+<div class="hint default-hint-text-size" dir="auto">{{{HINT}}}</div>
 
 <div class="container">
     <div class="col section-stopwatch">
@@ -84,12 +84,12 @@
 
 <div class="container">
     <div class="col center" id="resetConfirmation" style="display: none;">
-        <p id="confirmationMessage">Are you sure you want to restart the stopwatch?</p>
+        <p id="confirmationMessage" dir="auto">Are you sure you want to restart the stopwatch?</p>
         <div class="container center">
-            <button id="cancelReset" class="btn btn-secondary" onclick="cancelReset()">
+            <button id="cancelReset" class="btn btn-secondary" onclick="cancelReset()" dir="auto">
                 Cancel
             </button>
-            <button id="confirmReset" class="btn btn-danger">
+            <button id="confirmReset" class="btn btn-danger" dir="auto">
                 Reset
             </button>
         </div>
@@ -97,12 +97,12 @@
 </div>
 <div class="container"><!--Confirm end early-->
     <div class="col center" id="endEarlyConfirmation" style="display: none;">
-        <p id="confirmationMessageEE">Are you sure you would like to end early? The current time and counter value will be saved.</p>
-        <div class="container center">
+        <p id="confirmationMessageEE" dir="auto">Are you sure you would like to end early? The current time and counter value will be saved.</p>
+        <div class="container center" dir="auto">
             <button id="cancelEnd" class="btn btn-secondary" onclick="cancelReset()">
                 Cancel
             </button>
-            <button id="confirmEnd" class="btn btn-danger">
+            <button id="confirmEnd" class="btn btn-danger" dir="auto">
                 OK
             </button>
         </div>
