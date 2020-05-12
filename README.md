@@ -25,6 +25,8 @@ You can use the `selected-at()` function in order to get each individual value. 
 
     selected-at(${timer1}, 0)
 
+This field plug-in also inherits functionality from the [baseline-text](https://github.com/surveycto/baseline-text) field plug-in.
+
 [![Download now](extras/other-images/download-button.png)](https://github.com/surveycto/counter-with-timer/raw/master/counterwithtimer.fieldplugin.zip)
 
 ## Default SurveyCTO feature support
@@ -46,18 +48,11 @@ You can use the `selected-at()` function in order to get each individual value. 
 
 ## How to use
 
-**To use this plug-in as-is**, just download the [counterwithtimer.fieldplugin.zip](countertimer.fieldplugin.zip) file from this repo, and attach it to your form.
+**To use this field plug-in as-is:**
 
-To create your own field plug-in using this as a template, follow these steps:
-
-1. Fork this repo
-1. Make changes to the files in the `source` directory.
-
-    * **Note:** be sure to update the `manifest.json` file as well.
-
-1. Zip the updated contents of the `source` directory.
-1. Rename the .zip file to *yourpluginname*.fieldplugin.zip (replace *yourpluginname* with the name you want to use for your field plug-in).
-1. You may then attach your new .fieldplugin.zip file to your form as normal.
+1. Download the [sample form](extras/sample-form) from this repo and upload it to your SurveyCTO server.
+1. Download the [counterwithtimer.fieldplugin.zip](https://github.com/surveycto/counter-with-timer/raw/master/counterwithtimer.fieldplugin.zip) file from this repo, and attach it to the sample form on your SurveyCTO server.
+1. Adjust the parameter if you would like to use a different unit (see below).
 
 ## Parameters
 
@@ -90,8 +85,8 @@ Even though the duration entered is 15 seconds, it will be displayed as "1500 cs
 
 ## More resources
 
-* **Test form**  
-You can find a form definition in this repo here: [extras/test-form](extras/test-form).
+* **sample form**  
+You can find a form definition in this repo here: [extras/sample-form](extras/sample-form).
 
 * **Developer documentation**  
 More instructions for developing and using field plug-ins can be found here: [https://github.com/surveycto/Field-plug-in-resources](https://github.com/surveycto/Field-plug-in-resources)
