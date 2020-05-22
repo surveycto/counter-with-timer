@@ -43,51 +43,6 @@ function goToNextField(){
 
 /* global getPluginParameter, getMetaData, setAnswer, setMetaData, fieldProperties, goToNextField */
 
-// get the UI elements
-var timerDisp = document.querySelector('#stopwatch')
-var unitDisp = document.querySelector('#unit')
-var ssButton = document.querySelector('#startstop')
-var countDisp = document.querySelector('#count')
-var resetButtons = document.getElementsByClassName('restart-buttons')
-var resetConfBox = document.getElementById('resetConfirmation')
-var endEarlyButton = document.querySelector('#end-early')
-var confMessageP = document.querySelector('#confirmationMessage')
-var endEarlyDiv = document.querySelector('#endEarlyConfirmation')
-
-// get parameters info
-var timeStart = getPluginParameter('duration') * 1000
-var timeUnit = getPluginParameter('time-unit')
-
-// set up the timer and counter variables
-var round = 1000 // efault, may be changed
-var timePassed = 0 // ime passed so far
-var counter = 0
-var timerRunning = false
-var startTime = 0 // his will get an actual value when the timer starts in startStopTimer()
-var timeLeft
-
-var metadata = getMetaData()
-
-// / START stopwatch functions
-
-// Define what happens when the user resets the stopwatch
-function resetStopwatch () {
-  startStopTimer(0)
-  timePassed = 0
-
-  timePassed = 0
-  timeStart = getPluginParameter('duration') * 1000
-  timerDisp.innerHTML = timeStart
-  setAnswer('')
-  resetConfBox.style.display = 'none'
-  ssButton.classList.remove('btn-secondary')
-  ssButton.disabled = false
-  ssButton.querySelector('.play-icon').style.display = 'block'
-  ssButton.querySelector('.pause-icon').style.display = 'none'
-  showResetButtons()
-}
-// Set up the stopwatch
-setInterval(timer, 1)
 function timer () {
   if (timerRunning) {
     timePassed = Date.now() - startTime
@@ -218,6 +173,23 @@ function restartconf (restarter) {
   }
 }
 
+// Define what happens when the user resets the stopwatch
+function resetStopwatch () {
+  startStopTimer(0)
+  timePassed = 0
+
+  timePassed = 0
+  timeStart = startTotal
+  timerDisp.innerHTML = timeStart
+  setAnswer('')
+  resetConfBox.style.display = 'none'
+  ssButton.classList.remove('btn-secondary')
+  ssButton.disabled = false
+  ssButton.querySelector('.play-icon').style.display = 'block'
+  ssButton.querySelector('.pause-icon').style.display = 'none'
+  showResetButtons()
+}
+
 function endEarly () {
   endEarlyDiv.style.display = 'block'
 
@@ -240,9 +212,42 @@ function unEntity (str) {
   return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>')
 }
 
+// get the UI elements
+var timerDisp = document.querySelector('#stopwatch')
+var unitDisp = document.querySelector('#unit')
+var ssButton = document.querySelector('#startstop')
+var countDisp = document.querySelector('#count')
+var resetButtons = document.getElementsByClassName('restart-buttons')
+var resetConfBox = document.getElementById('resetConfirmation')
+var endEarlyButton = document.querySelector('#end-early')
+var confMessageP = document.querySelector('#confirmationMessage')
+var endEarlyDiv = document.querySelector('#endEarlyConfirmation')
+
+// get parameters info
+var startTotal = getPluginParameter('duration') * 1000 // Start time set by parameter
+if (startTotal == null) {
+  startTotal = 10000
+}
+
+var timeUnit = getPluginParameter('time-unit')
+if (timeUnit == null) {
+  timeUnit = 's'
+}
+
+// set up the timer and counter variables
+var timeStart // How much time should start with, which is less than usual if there is metadata
+var round = 1000 // Default, may be changed
+var timePassed = 0 // Time passed so far
+var counter = 0
+var timerRunning = false
+var startTime = 0 // This will get an actual value when the timer starts in startStopTimer()
+var timeLeft
+
+var metadata = getMetaData()
+
 // When loading the field, check to see if there is already a stored value. If yes, update the appropriate variables.
 if (metadata == null) {
-  timeStart = getPluginParameter('duration') * 1000
+  timeStart = startTotal
 } else {
   const parts = metadata.match(/[^ ]+/g)
   counter = parseInt(parts[0])
@@ -254,6 +259,7 @@ if (metadata == null) {
     endEarlyButton.style.display = 'none'
   }
 }
+timeLeft = timeStart
 
 if (fieldProperties.LABEL) {
   document.querySelector('.label').innerHTML = unEntity(fieldProperties.LABEL)
@@ -263,22 +269,15 @@ if (fieldProperties.HINT) {
 }
 
 // If the 'time-unit' parameter was supplied, make the appropriate adjustments
-if (timeUnit) {
-  if (timeUnit === 'ms') {
-    round = 1
-  } else if (timeUnit === 'cs') {
-    round = 10
-  } else if (timeUnit === 'ds') {
-    round = 100
-  } else {
-    round = 1000
-  }
+if (timeUnit === 'ms') {
+  round = 1
+} else if (timeUnit === 'cs') {
+  round = 10
+} else if (timeUnit === 'ds') {
+  round = 100
+} else {
+  round = 1000
 }
-
-if (timeStart == null) {
-  timeStart = 10000
-}
-timeLeft = timeStart
 
 // If the current value of 'count' is above 0 when the field loads, the 'decrease count' button should be blue
 if (counter > 0) {
@@ -290,5 +289,8 @@ countDisp.innerHTML = counter
 
 // Show the current stopwatch value
 unitDisp.innerHTML = timeUnit
+
+// Set up the stopwatch
+setInterval(timer, 1)
 
 // / END field setup/loading
