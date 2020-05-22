@@ -1,41 +1,43 @@
 /* fieldProperties = {
-  'PARAMETERS': [
+  PARAMETERS: [
     {
-      'key': 'duration',
-      'value': 10
+      key: 'duration',
+      value: 5
     },
     {
-      'key': 'time-unit',
-      'value': 'ds'
+      key: 'time-unit',
+      value: 'ds'
     }
   ],
-  'CURRENT_ANSWER': '10 1000',
-  'METADATA': '10 1000' // ow much time was left last time
+  CURRENT_ANSWER: undefined,
+  METADATA: undefined // ow much time was left last time
 }
 
-function getMetaData(){
+function getMetaData () {
   return fieldProperties.METADATA
 }
 
-function setMetaData(value){
+function setMetaData (value) {
   fieldProperties.METADATA = value
 }
 
-function getPluginParameter(param){
-  for(let p of fieldProperties.PARAMETERS){
-    let key = p.key
-    if(key == param){
-      return p.value
-    }
-  }
-  return
+function getPluginParameter (param) {
+  const parameters = fieldProperties.PARAMETERS
+  if (parameters != null) {
+    for (const p of fieldProperties.PARAMETERS) {
+      const key = p.key
+      if (key == param) {
+        return p.value
+      } // End IF
+    } // End FOR
+  } // End IF
 }
 
-function setAnswer(ans){
+function setAnswer (ans) {
   console.log('Set answer to: ' + ans)
 }
 
-function goToNextField(){
+function goToNextField () {
   console.log('Moved to next field')
 }
 
@@ -224,9 +226,11 @@ var confMessageP = document.querySelector('#confirmationMessage')
 var endEarlyDiv = document.querySelector('#endEarlyConfirmation')
 
 // get parameters info
-var startTotal = getPluginParameter('duration') * 1000 // Start time set by parameter
+var startTotal = getPluginParameter('duration') // Start time set by parameter
 if (startTotal == null) {
   startTotal = 10000
+} else {
+  startTotal *= 1000
 }
 
 var timeUnit = getPluginParameter('time-unit')
