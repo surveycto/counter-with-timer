@@ -8,6 +8,8 @@
 
 ## Description
 
+*Requires at least Android 7 or iOS 13 to work in SurveyCTO Collect mobile.*
+
 Use this field plug-in to add a timer to your field. It also includes a counter you can use to keep track of something while timing, with buttons to both count up and count down. You can use it to count words read, number of mistakes, or whatever else you need to count. The count will never go below 0.
 
 If an enumerator uses one of the reset buttons or the "End early" button (the hex octogon with a circle and square inside), they will have to confirm the reset/ending.
