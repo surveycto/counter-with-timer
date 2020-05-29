@@ -1,218 +1,4 @@
-/* fieldProperties = {
-  PARAMETERS: [
-    {
-      key: 'duration',
-      value: 5
-    },
-    {
-      key: 'time-unit',
-      value: 'ds'
-    }
-  ],
-  CURRENT_ANSWER: undefined,
-  METADATA: undefined // ow much time was left last time
-}
-
-function getMetaData () {
-  return fieldProperties.METADATA
-}
-
-function setMetaData (value) {
-  fieldProperties.METADATA = value
-}
-
-function getPluginParameter (param) {
-  const parameters = fieldProperties.PARAMETERS
-  if (parameters != null) {
-    for (const p of fieldProperties.PARAMETERS) {
-      const key = p.key
-      if (key == param) {
-        return p.value
-      } // End IF
-    } // End FOR
-  } // End IF
-}
-
-function setAnswer (ans) {
-  console.log('Set answer to: ' + ans)
-}
-
-function goToNextField () {
-  console.log('Moved to next field')
-}
-
-// Above for testing only */
-
 /* global getPluginParameter, getMetaData, setAnswer, setMetaData, fieldProperties, goToNextField */
-
-function timer () {
-  if (timerRunning) {
-    timePassed = Date.now() - startTime
-  }
-
-  timeLeft = timeStart - timePassed
-  setMeta()
-
-  if (timeLeft < 0) { // imer ended
-    timeLeft = 0
-    timerRunning = false
-    ssButton.disabled = true
-    ssButton.classList.add('btn-secondary')
-    endEarlyButton.style.display = 'none'
-    setAns()
-  }
-  timerDisp.innerHTML = Math.floor(timeLeft / round)
-}
-// Defines what happens when the stopwatch button is pressed. This can function as either a 'start' button or a 'stop' button, depending on whether or not the stopwatch is currently running.
-function startStopTimer (startOrStop) {
-  if (timerRunning || (startOrStop === 0)) {
-    timerRunning = false
-    ssButton.querySelector('.play-icon').style.display = 'block'
-    ssButton.querySelector('.pause-icon').style.display = 'none'
-  } else {
-    startTime = Date.now() - timePassed
-    timerRunning = true
-    ssButton.querySelector('.play-icon').style.display = 'none'
-    ssButton.querySelector('.pause-icon').style.display = 'block'
-  }
-}
-
-// / END stopwatch functions
-
-// / START counter functions
-
-// Define what happens when the user resets the counter
-function resetCounter () {
-  counter = 0
-  countDisp.innerHTML = counter
-  if (timeLeft === 0) {
-    setAns()
-  }
-  resetConfBox.style.display = 'none'
-  document.getElementById('counterdown').classList.add('btn-secondary')
-  showResetButtons()
-}
-// Define what happens when the user cancels a reset
-function cancelReset () {
-  resetConfBox.style.display = 'none'
-  showResetButtons()
-}
-// Increase the current 'count'
-function countup () {
-  counter++
-  countDisp.innerHTML = counter
-  if (timeLeft === 0) {
-    setAns()
-  }
-  if (counter > 0) {
-    document.getElementById('counterdown').classList.remove('btn-secondary')
-  }
-  setMeta()
-}
-// Decrease the current 'count'
-function countdown () {
-  if (counter > 0) {
-    counter--
-  }
-  if (counter === 0) {
-    document.getElementById('counterdown').classList.add('btn-secondary')
-  }
-  countDisp.innerHTML = counter
-  if (timeLeft === 0) {
-    setAns()
-  }
-  setMeta()
-}
-
-// / END counter functions
-
-// / START global functions
-
-// define what happens when the user attempts to clear the response
-function clearAnswer () {
-  resetStopwatch()
-  resetCounter()
-  setAnswer('')
-}
-
-// define how to save the field's value in the form data
-function setAns () {
-  const ans = String(counter) + ' ' + String(timeLeft)
-  setMetaData(ans)
-  setAnswer(ans)
-}
-
-function setMeta () {
-  const ans = String(counter) + ' ' + String(timeLeft)
-  setMetaData(ans)
-}
-
-// Hide the reset buttons from the UI
-function hideResetButtons () {
-  for (var i = 0; i < resetButtons.length; i++) {
-    resetButtons[i].style.display = 'none'
-  }
-}
-// Show the reset buttons in the UI
-function showResetButtons () {
-  for (var i = 0; i < resetButtons.length; i++) {
-    resetButtons[i].style.display = 'block'
-  }
-  endEarlyButton.style.display = ''
-}
-// Define the 'reset' function to allow either the stopwatch or the counter to use the same confirmation box
-function restartconf (restarter) {
-  const warningMessage = 'Are sure you would like to reset the <strong>' + restarter + '</strong>?'
-  confMessageP.innerHTML = warningMessage
-  hideResetButtons()
-  resetConfBox.style.display = 'block'
-  if (restarter === 'timer') {
-    document.getElementById('confirmReset').removeEventListener('click', resetCounter)
-    document.getElementById('confirmReset').addEventListener('click', resetStopwatch)
-  } else if (restarter === 'counter') {
-    document.getElementById('confirmReset').removeEventListener('click', resetStopwatch)
-    document.getElementById('confirmReset').addEventListener('click', resetCounter)
-  }
-}
-
-// Define what happens when the user resets the stopwatch
-function resetStopwatch () {
-  startStopTimer(0)
-  timePassed = 0
-
-  timePassed = 0
-  timeStart = startTotal
-  timerDisp.innerHTML = timeStart
-  setAnswer('')
-  resetConfBox.style.display = 'none'
-  ssButton.classList.remove('btn-secondary')
-  ssButton.disabled = false
-  ssButton.querySelector('.play-icon').style.display = 'block'
-  ssButton.querySelector('.pause-icon').style.display = 'none'
-  showResetButtons()
-}
-
-function endEarly () {
-  endEarlyDiv.style.display = 'block'
-
-  document.querySelector('#cancelEnd').addEventListener('click', function () {
-    endEarlyDiv.style.display = 'none'
-  })
-
-  document.querySelector('#confirmEnd').addEventListener('click', function () {
-    setAns()
-    goToNextField()
-  })
-}
-
-// / END global functions
-
-// / START field setup/loading
-
-// If the field label or hint contain any HTML that isn't in the form definition, then the < and > characters will have been replaced by their HTML character entities, and the HTML won't render. We need to turn those HTML entities back to actual < and > characters so that the HTML renders properly. This will allow you to render HTML from field references in your field label or hint.
-function unEntity (str) {
-  return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-}
 
 // get the UI elements
 var timerDisp = document.querySelector('#stopwatch')
@@ -297,4 +83,165 @@ unitDisp.innerHTML = timeUnit
 // Set up the stopwatch
 setInterval(timer, 1)
 
-// / END field setup/loading
+function timer () {
+  if (timerRunning) {
+    timePassed = Date.now() - startTime
+  }
+
+  timeLeft = timeStart - timePassed
+  setMeta()
+
+  if (timeLeft < 0) { // imer ended
+    timeLeft = 0
+    timerRunning = false
+    ssButton.disabled = true
+    ssButton.classList.add('btn-secondary')
+    endEarlyButton.style.display = 'none'
+    setAns()
+  }
+  timerDisp.innerHTML = Math.floor(timeLeft / round)
+}
+
+// Defines what happens when the stopwatch button is pressed. This can function as either a 'start' button or a 'stop' button, depending on whether or not the stopwatch is currently running.
+function startStopTimer (startOrStop) {
+  if (timerRunning || (startOrStop === 0)) {
+    timerRunning = false
+    ssButton.querySelector('.play-icon').style.display = 'block'
+    ssButton.querySelector('.pause-icon').style.display = 'none'
+  } else {
+    startTime = Date.now() - timePassed
+    timerRunning = true
+    ssButton.querySelector('.play-icon').style.display = 'none'
+    ssButton.querySelector('.pause-icon').style.display = 'block'
+  }
+}
+
+// Define what happens when the user resets the counter
+function resetCounter () {
+  counter = 0
+  countDisp.innerHTML = counter
+  if (timeLeft === 0) {
+    setAns()
+  }
+  resetConfBox.style.display = 'none'
+  document.getElementById('counterdown').classList.add('btn-secondary')
+  showResetButtons()
+}
+
+// Define what happens when the user cancels a reset
+function cancelReset () {
+  resetConfBox.style.display = 'none'
+  showResetButtons()
+}
+
+// Increase the current 'count'
+function countup () {
+  counter++
+  countDisp.innerHTML = counter
+  if (timeLeft === 0) {
+    setAns()
+  }
+  if (counter > 0) {
+    document.getElementById('counterdown').classList.remove('btn-secondary')
+  }
+  setMeta()
+}
+
+// Decrease the current 'count'
+function countdown () {
+  if (counter > 0) {
+    counter--
+  }
+  if (counter === 0) {
+    document.getElementById('counterdown').classList.add('btn-secondary')
+  }
+  countDisp.innerHTML = counter
+  if (timeLeft === 0) {
+    setAns()
+  }
+  setMeta()
+}
+
+// define what happens when the user attempts to clear the response
+function clearAnswer () {
+  resetStopwatch()
+  resetCounter()
+  setAnswer('')
+}
+
+// define how to save the field's value in the form data
+function setAns () {
+  const ans = String(counter) + ' ' + String(timeLeft)
+  setMetaData(ans)
+  setAnswer(ans)
+}
+
+function setMeta () {
+  const ans = String(counter) + ' ' + String(timeLeft)
+  setMetaData(ans)
+}
+
+// Hide the reset buttons from the UI
+function hideResetButtons () {
+  for (var i = 0; i < resetButtons.length; i++) {
+    resetButtons[i].style.display = 'none'
+  }
+}
+
+// Show the reset buttons in the UI
+function showResetButtons () {
+  for (var i = 0; i < resetButtons.length; i++) {
+    resetButtons[i].style.display = 'block'
+  }
+  endEarlyButton.style.display = ''
+}
+
+// Define the 'reset' function to allow either the stopwatch or the counter to use the same confirmation box
+function restartconf (restarter) {
+  const warningMessage = 'Are sure you would like to reset the <strong>' + restarter + '</strong>?'
+  confMessageP.innerHTML = warningMessage
+  hideResetButtons()
+  resetConfBox.style.display = 'block'
+  if (restarter === 'timer') {
+    document.getElementById('confirmReset').removeEventListener('click', resetCounter)
+    document.getElementById('confirmReset').addEventListener('click', resetStopwatch)
+  } else if (restarter === 'counter') {
+    document.getElementById('confirmReset').removeEventListener('click', resetStopwatch)
+    document.getElementById('confirmReset').addEventListener('click', resetCounter)
+  }
+}
+
+// Define what happens when the user resets the stopwatch
+function resetStopwatch () {
+  startStopTimer(0)
+  timePassed = 0
+
+  timePassed = 0
+  timeStart = startTotal
+  timerDisp.innerHTML = timeStart
+  setAnswer('')
+  resetConfBox.style.display = 'none'
+  ssButton.classList.remove('btn-secondary')
+  ssButton.disabled = false
+  ssButton.querySelector('.play-icon').style.display = 'block'
+  ssButton.querySelector('.pause-icon').style.display = 'none'
+  showResetButtons()
+}
+
+function endEarly () {
+  endEarlyDiv.style.display = 'block'
+
+  document.querySelector('#cancelEnd').addEventListener('click', function () {
+    endEarlyDiv.style.display = 'none'
+  })
+
+  document.querySelector('#confirmEnd').addEventListener('click', function () {
+    setAns()
+    goToNextField()
+  })
+}
+
+// If the field label or hint contain any HTML that isn't in the form definition, then the < and > characters will have been replaced by their HTML character entities, and the HTML won't render. We need to turn those HTML entities back to actual < and > characters so that the HTML renders properly. This will allow you to render HTML from field references in your field label or hint.
+function unEntity (str) {
+  return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+}
