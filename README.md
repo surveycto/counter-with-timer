@@ -8,7 +8,7 @@
 
 ## Description
 
-*Requires at least Android 7 or iOS 13 to work in SurveyCTO Collect mobile.*
+*Requires at least Android 7 or iOS 13 to work on SurveyCTO Collect.*
 
 Use this field plug-in to add a timer to your field. It also includes a counter you can use to keep track of something while timing, with buttons to both count up and count down. You can use it to count words read, number of mistakes, or whatever else you need to count. The count will never go below 0.
 
@@ -20,7 +20,7 @@ You can customize the timer duration and unit used. See **Parameters** below for
 
 [![Download now](extras/other-images/download-button.png)](https://github.com/surveycto/counter-with-timer/raw/master/counterwithtimer.fieldplugin.zip)
 
-### Feature list
+### Features
 
 * Timer for keeping track of time remaining
 * Parameter for specifying starting time
