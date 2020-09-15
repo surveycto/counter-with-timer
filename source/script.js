@@ -39,7 +39,7 @@ var metadata = getMetaData()
 if (metadata == null) {
   timeStart = startTotal
 } else {
-  const parts = metadata.match(/[^ ]+/g)
+  var parts = metadata.match(/[^ ]+/g)
   counter = parseInt(parts[0])
   timeStart = parseInt(parts[1])
 
@@ -171,13 +171,13 @@ function clearAnswer () {
 
 // define how to save the field's value in the form data
 function setAns () {
-  const ans = String(counter) + ' ' + String(timeLeft)
+  var ans = String(counter) + ' ' + String(timeLeft)
   setMetaData(ans)
   setAnswer(ans)
 }
 
 function setMeta () {
-  const ans = String(counter) + ' ' + String(timeLeft)
+  var ans = String(counter) + ' ' + String(timeLeft)
   setMetaData(ans)
 }
 
@@ -198,7 +198,7 @@ function showResetButtons () {
 
 // Define the 'reset' function to allow either the stopwatch or the counter to use the same confirmation box
 function restartconf (restarter) {
-  const warningMessage = 'Are sure you would like to reset the <strong>' + restarter + '</strong>?'
+  var warningMessage = 'Are sure you would like to reset the <strong>' + restarter + '</strong>?'
   confMessageP.innerHTML = warningMessage
   hideResetButtons()
   resetConfBox.style.display = 'block'
