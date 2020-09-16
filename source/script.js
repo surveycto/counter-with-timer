@@ -287,8 +287,8 @@ function resetStopwatch () {
   timePassed = 0
 
   timePassed = 0
-  timeStart = startTotal
-  timerDisp.innerHTML = timeStart
+  timeStart = timeLeft = startTotal
+  timerDisp.innerHTML = Math.floor(timeStart / round)
   setAnswer('')
   resetConfBox.style.display = 'none'
   ssButton.classList.remove('btn-secondary')
