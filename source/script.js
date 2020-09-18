@@ -39,7 +39,7 @@ var metadata = getMetaData()
 if (metadata == null) {
   timeStart = startTotal
 } else {
-  const parts = metadata.match(/[^ ]+/g)
+  var parts = metadata.match(/[^ ]+/g)
   counter = parseInt(parts[0])
   timeStart = parseInt(parts[1])
 
@@ -86,12 +86,11 @@ setInterval(timer, 1)
 function timer () {
   if (timerRunning) {
     timePassed = Date.now() - startTime
+    timeLeft = timeStart - timePassed
   }
-
-  timeLeft = timeStart - timePassed
   setMeta()
 
-  if (timeLeft < 0) { // imer ended
+  if (timeLeft < 0) { // Timer ended
     timeLeft = 0
     timerRunning = false
     ssButton.disabled = true
@@ -171,13 +170,13 @@ function clearAnswer () {
 
 // define how to save the field's value in the form data
 function setAns () {
-  const ans = String(counter) + ' ' + String(timeLeft)
+  var ans = String(counter) + ' ' + String(timeLeft)
   setMetaData(ans)
   setAnswer(ans)
 }
 
 function setMeta () {
-  const ans = String(counter) + ' ' + String(timeLeft)
+  var ans = String(counter) + ' ' + String(timeLeft)
   setMetaData(ans)
 }
 
@@ -198,7 +197,7 @@ function showResetButtons () {
 
 // Define the 'reset' function to allow either the stopwatch or the counter to use the same confirmation box
 function restartconf (restarter) {
-  const warningMessage = 'Are sure you would like to reset the <strong>' + restarter + '</strong>?'
+  var warningMessage = 'Are sure you would like to reset the <strong>' + restarter + '</strong>?'
   confMessageP.innerHTML = warningMessage
   hideResetButtons()
   resetConfBox.style.display = 'block'
@@ -217,8 +216,8 @@ function resetStopwatch () {
   timePassed = 0
 
   timePassed = 0
-  timeStart = startTotal
-  timerDisp.innerHTML = timeStart
+  timeStart = timeLeft = startTotal
+  timerDisp.innerHTML = Math.floor(timeStart / round)
   setAnswer('')
   resetConfBox.style.display = 'none'
   ssButton.classList.remove('btn-secondary')
