@@ -80,7 +80,7 @@ You can use the following display units:
 
 For example, if you use the following *appearance*:
 
-    custom-countertimer(duration=15, unit='cs')
+    custom-counterwithtimer(duration=15, unit='cs')
 
 Even though the duration entered is 15 seconds, it will be displayed as "1500 cs" before the timer starts.
 
